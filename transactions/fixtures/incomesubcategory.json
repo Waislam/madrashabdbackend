@@ -1,0 +1,202 @@
+[
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 1,
+    "fields": {
+        "name": "Admission",
+        "category": 1
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 2,
+    "fields": {
+        "name": "Monthly Tution",
+        "category": 1
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 3,
+    "fields": {
+        "name": "Accommodation",
+        "category": 1
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 4,
+    "fields": {
+        "name": "Boarding/Mess",
+        "category": 1
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 5,
+    "fields": {
+        "name": "Examination",
+        "category": 1
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 6,
+    "fields": {
+        "name": "Utility Bill",
+        "category": 1
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 7,
+    "fields": {
+        "name": "Zakat",
+        "category": 2
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 8,
+    "fields": {
+        "name": "Ushor",
+        "category": 2
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 9,
+    "fields": {
+        "name": "Fitra",
+        "category": 2
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 10,
+    "fields": {
+        "name": "Mannot",
+        "category": 2
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 11,
+    "fields": {
+        "name": "Chamra",
+        "category": 2
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 12,
+    "fields": {
+        "name": "permanent Property",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 13,
+    "fields": {
+        "name": "Permanent Members",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 14,
+    "fields": {
+        "name": "Store/Edcaion tools Sale",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 15,
+    "fields": {
+        "name": "Abnai-e jameya",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 16,
+    "fields": {
+        "name": "Kitab fund",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 17,
+    "fields": {
+        "name": "Single time fund",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 18,
+    "fields": {
+        "name": "Monthly Contribution",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 19,
+    "fields": {
+        "name": "Seasonal Collection",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 20,
+    "fields": {
+        "name": "Shinduk/road collection",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 21,
+    "fields": {
+        "name": "Korjo",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 22,
+    "fields": {
+        "name": "Event/mahfil collection",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 23,
+    "fields": {
+        "name": "Construction Collection",
+        "category": 4
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 24,
+    "fields": {
+        "name": "Permanent Property Buying collection",
+        "category": 4
+    }
+},
+{
+    "model": "transactions.incomesubcategory",
+    "pk": 25,
+    "fields": {
+        "name": "Nanabidho development",
+        "category": 4
+    }
+}
+]

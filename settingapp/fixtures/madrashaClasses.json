@@ -1,0 +1,13 @@
+[
+{
+    "model": "settingapp.madrashaclasses",
+    "pk": 1,
+    "fields": {
+        "name": "class1",
+        "department": 1,
+        "is_active": true,
+        "madrasha": 1,
+        "slug": "class1"
+    }
+}
+]

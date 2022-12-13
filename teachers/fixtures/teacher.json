@@ -1,0 +1,31 @@
+[
+{
+    "model": "teachers.teacher",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "madrasha": null,
+        "teacher_id": "T101",
+        "father_name": "Ahmed",
+        "mother_name": "Mst",
+        "date_of_birth": "2022-09-20",
+        "gender": "male",
+        "religion": "islam",
+        "marital_status": "married",
+        "present_address": null,
+        "permanent_address": null,
+        "education": 1,
+        "skill": 1,
+        "phone_home": "43423",
+        "nid": "7567657",
+        "birth_certificate": "7676",
+        "nationality": "bangladeshi",
+        "blood_group": "",
+        "department": 1,
+        "designation": null,
+        "starting_date": "2022-09-20",
+        "ending_date": null,
+        "slug": "t101"
+    }
+}
+]

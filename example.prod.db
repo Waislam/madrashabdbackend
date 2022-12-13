@@ -1,0 +1,3 @@
+POSTGRES_USER=madrasha
+POSTGRES_PASSWORD=madrasha
+POSTGRES_DB=madrasha_db

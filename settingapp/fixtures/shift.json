@@ -1,0 +1,15 @@
+[
+{
+    "model": "settingapp.shift",
+    "pk": 1,
+    "fields": {
+        "name": "new Shift",
+        "shift_time": "06:00:00",
+        "department": 1,
+        "madrasha_class": 1,
+        "is_active": true,
+        "madrasha": 1,
+        "slug": "new-shift"
+    }
+}
+]

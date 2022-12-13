@@ -1,0 +1,12 @@
+[
+{
+    "model": "teachers.education",
+    "pk": 1,
+    "fields": {
+        "degree_name": "SSC",
+        "institution_name": "New",
+        "passing_year": "2011",
+        "result": "3.9"
+    }
+}
+]

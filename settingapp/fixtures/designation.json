@@ -1,0 +1,12 @@
+[
+{
+    "model": "settingapp.designation",
+    "pk": 1,
+    "fields": {
+        "name": "Test",
+        "is_active": true,
+        "madrasha": 1,
+        "slug": "test"
+    }
+}
+]

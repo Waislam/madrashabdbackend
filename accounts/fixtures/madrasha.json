@@ -1,0 +1,18 @@
+[
+{
+    "model": "accounts.madrasha",
+    "pk": 1,
+    "fields": {
+        "name": "Amader Madrasha",
+        "madrasha_code": "100",
+        "madrasha_address": 1,
+        "madrasha_logo": "",
+        "created_at": "2022-08-31T14:22:52.632Z",
+        "updated_at": "2022-08-31T14:22:52.632Z",
+        "created_by": "waliul",
+        "updated_by": "wal",
+        "active_status": "active",
+        "slug": "100"
+    }
+}
+]

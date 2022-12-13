@@ -1,0 +1,30 @@
+[
+{
+    "model": "accounts.role",
+    "pk": 1,
+    "fields": {
+        "role_name": "Madrasha Admin"
+    }
+},
+{
+    "model": "accounts.role",
+    "pk": 2,
+    "fields": {
+        "role_name": "Student"
+    }
+},
+{
+    "model": "accounts.role",
+    "pk": 3,
+    "fields": {
+        "role_name": "Teacher"
+    }
+},
+{
+    "model": "accounts.role",
+    "pk": 4,
+    "fields": {
+        "role_name": "Staff"
+    }
+}
+]

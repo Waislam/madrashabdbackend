@@ -1,0 +1,338 @@
+[
+{
+    "model": "students.parent",
+    "pk": 1,
+    "fields": {
+        "parent_name": "father name",
+        "parent_date_of_birth": "1988-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 2,
+    "fields": {
+        "parent_name": "mother name",
+        "parent_date_of_birth": "1990-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 3,
+    "fields": {
+        "parent_name": "father name",
+        "parent_date_of_birth": "1988-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 4,
+    "fields": {
+        "parent_name": "mother name",
+        "parent_date_of_birth": "1990-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 5,
+    "fields": {
+        "parent_name": "father name",
+        "parent_date_of_birth": "1988-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 6,
+    "fields": {
+        "parent_name": "mother name",
+        "parent_date_of_birth": "1990-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 7,
+    "fields": {
+        "parent_name": "father name",
+        "parent_date_of_birth": "1988-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 8,
+    "fields": {
+        "parent_name": "mother name",
+        "parent_date_of_birth": "1990-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 9,
+    "fields": {
+        "parent_name": "father name",
+        "parent_date_of_birth": "1988-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 10,
+    "fields": {
+        "parent_name": "mother name",
+        "parent_date_of_birth": "1990-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 11,
+    "fields": {
+        "parent_name": "father name",
+        "parent_date_of_birth": "1988-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 12,
+    "fields": {
+        "parent_name": "mother name",
+        "parent_date_of_birth": "1990-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 13,
+    "fields": {
+        "parent_name": "father name",
+        "parent_date_of_birth": "1988-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 14,
+    "fields": {
+        "parent_name": "mother name",
+        "parent_date_of_birth": "1990-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 15,
+    "fields": {
+        "parent_name": "fdsf",
+        "parent_date_of_birth": "2022-09-15",
+        "parent_nid": "fgd465743",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 16,
+    "fields": {
+        "parent_name": "mother name",
+        "parent_date_of_birth": "1990-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 17,
+    "fields": {
+        "parent_name": "fgfg",
+        "parent_date_of_birth": "2022-09-28",
+        "parent_nid": "fsdfdf",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 18,
+    "fields": {
+        "parent_name": "mother name",
+        "parent_date_of_birth": "1990-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 19,
+    "fields": {
+        "parent_name": "fgfg",
+        "parent_date_of_birth": "2022-09-28",
+        "parent_nid": "fsdfdf",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 20,
+    "fields": {
+        "parent_name": "mother name",
+        "parent_date_of_birth": "1990-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 21,
+    "fields": {
+        "parent_name": "fgfg",
+        "parent_date_of_birth": "2022-09-28",
+        "parent_nid": "fsdfdf",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 22,
+    "fields": {
+        "parent_name": "mother name",
+        "parent_date_of_birth": "1990-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 23,
+    "fields": {
+        "parent_name": "346stdth",
+        "parent_date_of_birth": "2022-10-12",
+        "parent_nid": "fgdhdfh436",
+        "occupation": "farmer",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "hhtr56",
+        "parent_email": ""
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 24,
+    "fields": {
+        "parent_name": "ghfhfdh",
+        "parent_date_of_birth": "2022-10-11",
+        "parent_nid": "dthtdh54654",
+        "occupation": "doctor",
+        "organization_with_designation": "organization name, podobi",
+        "education": "hsc/equivalent",
+        "contact_number": "thfdh565",
+        "parent_email": ""
+    }
+}
+]

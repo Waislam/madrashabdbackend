@@ -1,0 +1,12 @@
+[
+{
+    "model": "settingapp.department",
+    "pk": 1,
+    "fields": {
+        "name": "Jamat Khana",
+        "is_active": true,
+        "slug": "jamat-khana",
+        "madrasha": 1
+    }
+}
+]

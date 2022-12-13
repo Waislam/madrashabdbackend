@@ -1,0 +1,234 @@
+[
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 1,
+    "fields": {
+        "name": "Boarding Khoraki",
+        "category": 1
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 2,
+    "fields": {
+        "name": "Tution Fees",
+        "category": 1
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 3,
+    "fields": {
+        "name": "Dress",
+        "category": 1
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 4,
+    "fields": {
+        "name": "Treatment",
+        "category": 1
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 5,
+    "fields": {
+        "name": "Free Kitab",
+        "category": 1
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 6,
+    "fields": {
+        "name": "Daily Bazar",
+        "category": 2
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 7,
+    "fields": {
+        "name": "Monthly Bazar",
+        "category": 2
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 8,
+    "fields": {
+        "name": "Jalani",
+        "category": 2
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 9,
+    "fields": {
+        "name": "Other",
+        "category": 2
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 10,
+    "fields": {
+        "name": "Other",
+        "category": 1
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 11,
+    "fields": {
+        "name": "Teacher/staff Salary",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 12,
+    "fields": {
+        "name": "Hospitality",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 13,
+    "fields": {
+        "name": "Event/Mahfil",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 14,
+    "fields": {
+        "name": "Ujratul Amil",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 15,
+    "fields": {
+        "name": "Production/Cultivation",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 16,
+    "fields": {
+        "name": "Permanent Property Buying",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 17,
+    "fields": {
+        "name": "Talimat",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 18,
+    "fields": {
+        "name": "Utility Bill",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 19,
+    "fields": {
+        "name": "Publication Cost",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 20,
+    "fields": {
+        "name": "Payback Korso",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 21,
+    "fields": {
+        "name": "Bank Service Charge",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 22,
+    "fields": {
+        "name": "Dawah",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 23,
+    "fields": {
+        "name": "Transport",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 24,
+    "fields": {
+        "name": "Generator Bill",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 25,
+    "fields": {
+        "name": "New Construction",
+        "category": 4
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 26,
+    "fields": {
+        "name": "Re-Construction",
+        "category": 4
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 27,
+    "fields": {
+        "name": "Repair",
+        "category": 4
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 28,
+    "fields": {
+        "name": "Other",
+        "category": 3
+    }
+},
+{
+    "model": "transactions.expensesubcategory",
+    "pk": 29,
+    "fields": {
+        "name": "Other",
+        "category": 4
+    }
+}
+]

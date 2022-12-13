@@ -1,0 +1,58 @@
+[
+{
+    "model": "accounts.division",
+    "pk": 1,
+    "fields": {
+        "name": "Mymensingh"
+    }
+},
+{
+    "model": "accounts.division",
+    "pk": 2,
+    "fields": {
+        "name": "Barisal"
+    }
+},
+{
+    "model": "accounts.division",
+    "pk": 3,
+    "fields": {
+        "name": "Chittagong"
+    }
+},
+{
+    "model": "accounts.division",
+    "pk": 4,
+    "fields": {
+        "name": "Dhaka"
+    }
+},
+{
+    "model": "accounts.division",
+    "pk": 5,
+    "fields": {
+        "name": "Khulna"
+    }
+},
+{
+    "model": "accounts.division",
+    "pk": 6,
+    "fields": {
+        "name": "Rajshahi"
+    }
+},
+{
+    "model": "accounts.division",
+    "pk": 7,
+    "fields": {
+        "name": "Rangpur"
+    }
+},
+{
+    "model": "accounts.division",
+    "pk": 8,
+    "fields": {
+        "name": "Sylhet"
+    }
+}
+]
