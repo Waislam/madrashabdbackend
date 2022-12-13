@@ -64,6 +64,7 @@ class BookDistributionToTeacherView(mixins.CreateModelMixin,
                                     mixins.ListModelMixin,
                                     generics.GenericAPIView
                                     ):
+
     queryset = BookDistributeToTeacher.objects.all()
 
     def get_queryset(self):
