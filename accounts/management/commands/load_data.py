@@ -14,7 +14,7 @@ class Command(BaseCommand):
         call_command('loaddata', 'address.json')
         call_command('loaddata', 'madrasha.json')
         call_command('loaddata', 'books.json')
-        # call_command('loaddata', 'department.json')
+        call_command('loaddata', 'department.json')
         call_command('loaddata', 'designation.json')
         call_command('loaddata', 'examRules.json')
         call_command('loaddata', 'fees.json')
