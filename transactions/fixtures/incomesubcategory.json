@@ -43,7 +43,7 @@
     "model": "transactions.incomesubcategory",
     "pk": 6,
     "fields": {
-        "name": "Utility Bill",
+        "name": "Transport",
         "category": 1
     }
 },

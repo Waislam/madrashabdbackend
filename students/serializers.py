@@ -142,7 +142,8 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ['id', 'user', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate',
+        fields = ['id', 'user', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age',
+                  'birth_certificate',
                   'student_nid',
                   'passport_number', 'nationality', 'religion', 'gender', 'present_address', 'permanent_address',
                   'father_info', 'mother_info', 'guardian_name', 'guardian_relation', 'guardian_occupation',
@@ -155,7 +156,7 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'monthly_tution_fee', 'boarding_feee',
-                  'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
+                  'admission_fee', 'transport_fee', 'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
 
     def update(self, instance, validated_data):
         # print("instance detail: ", instance.student_id)
@@ -247,6 +248,8 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
         instance.academic_fees = validated_data.get('academic_fees', instance.academic_fees)
         instance.monthly_tution_fee = validated_data.get('monthly_tution_fee', instance.monthly_tution_fee)
         instance.boarding_feee = validated_data.get('boarding_feee', instance.boarding_feee)
+        instance.admission_fee = validated_data.get('admission_fee', instance.admission_fee)
+        instance.transport_fee = validated_data.get('transport_fee', instance.transport_fee)
         instance.talimi_murobbi_name = validated_data.get('talimi_murobbi_name', instance.talimi_murobbi_name)
         instance.eslahi_murobbi_name = validated_data.get('eslahi_murobbi_name', instance.eslahi_murobbi_name)
         instance.slug = validated_data.get('slug', instance.slug)
