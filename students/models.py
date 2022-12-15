@@ -135,6 +135,8 @@ class Student(models.Model):
     academic_fees = models.CharField(max_length=255, blank=True, null=True)
     monthly_tution_fee = models.CharField(max_length=50, blank=True, null=True)
     boarding_feee = models.CharField(max_length=50, blank=True, null=True)
+    admission_fee = models.CharField(max_length=50, blank=True, null=True)
+    transport_fee = models.CharField(max_length=50, blank=True, null=True)
     talimi_murobbi_name = models.CharField(max_length=150, blank=True, null=True)
     eslahi_murobbi_name = models.CharField(max_length=150, blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True)
