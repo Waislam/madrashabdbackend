@@ -8,7 +8,7 @@ from rest_framework import serializers
 
 from settingapp.serializers import DepartmentSerializer, ClassGroupSerializer, ShiftSerializer, SessionSerializer, \
     ClassSerializer
-from .models import Student, AcademicFess, Parent
+from .models import Student, AcademicFess, Parent, FessInfo
 from accounts.models import Address, CustomUser
 from accounts.serializers import AddressSerializer, CustomUserSerializer, AddressDetailSerializer, MadrashaSerializer, \
     CustomUserListSerializer, CustomUserUpdateSerializer
@@ -256,3 +256,10 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+class FessInfoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FessInfo
+        fields = '__all__'

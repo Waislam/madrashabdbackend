@@ -51,7 +51,7 @@ class IncomeSubCategory(models.Model):
 class StudentIncome(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='students_incomes', null=True)
     student = models.ForeignKey('students.student', on_delete=models.PROTECT, related_name='student_payment')
-    total_amount = models.ForeignKey(Fees, on_delete=models.SET_NULL, related_name='amounts', null=True)
+    total_amount = models.IntegerField(blank=True, null=True)
     # for_month = models.CharField(max_length=20, choices=MONTH_CHOICES, null=True, blank=True)
     # to_month = models.CharField(max_length=20, choices=MONTH_CHOICES, null=True, blank=True)
     from_date = models.DateField(blank=True, null=True)
@@ -88,7 +88,7 @@ class StudentIncome(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.student_class_id
+        return str(self.id)
 
 
 class OtherIncome(models.Model):

@@ -24,7 +24,7 @@ class StudentIncomeSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentIncome
         fields = ['id', 'madrasha', 'student', 'total_amount', 'from_date', 'to_date',
-                  'paid_date', 'receipt_number', 'student_id', 'voucher_name']
+                  'paid_date', 'created_by']
 
 
 class StudentIncomeListSerializer(serializers.ModelSerializer):
