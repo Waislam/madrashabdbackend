@@ -16,7 +16,7 @@ admin.site.register(IncomeSubCategory)
 
 @admin.register(StudentIncome)
 class StudentIncomeAdminView(admin.ModelAdmin):
-    list_display = ['category', 'sub_category', 'student', 'created_at']
+    list_display = ['student', 'created_at']
     ordering = ['-created_at']
 
     class Media:
