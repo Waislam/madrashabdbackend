@@ -5,10 +5,11 @@
 4. MadrashaClassesGroup
 5. Shift
 6. Books
-7. Fees
-8. Session
-9. Exam rules
-10. Buidling
+7. FeesCategory
+8. Fees
+9. Session
+10. Exam rules
+11. Buidling
 """
 from django.shortcuts import render
 from django.http import Http404
@@ -16,11 +17,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, mixins, generics
 from .models import Department, Designation, MadrashaClasses, MadrashaGroup, Shift, Session, Books, ExamRules, Fees, \
-    Building, Room, Seat
+    Building, Room, Seat, FeesCategory
 from .serializers import (DepartmentSerializer, DesignationSerializer, ClassSerializer, ClassGroupSerializer,
                           ShiftSerializer,
                           BooksSerializer, SessionSerializer, ExamRulesSerializer,
-                          FeesSerializer, BuildingSerializer, SeatSerializer, SeatListSerializer)
+                          FeesSerializer, BuildingSerializer, SeatSerializer, SeatListSerializer,
+                          FeesCategorySerializer, FeesCategoryListSerializer)
 
 from .serializers import (DepartmentListSerializer,
                           DesignationListSerializer,
@@ -360,9 +362,22 @@ class BooksDetailview(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# ================================== 7. Fees =====================
+# ======================= 7. FeesCategory ===============
+class FeesCategoryView(APIView):
+    def post(self, request, formate=None):
+        serializer = FeesCategorySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"status": True, "data": serializer.data, "message": "Fess Category has been created"})
+        return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, madrasha_slug, formate=None):
+        obj = FeesCategory.objects.all(madrash__slug=madrasha_slug)
+        serializer = FeesCategoryListSerializer(obj, many=True)
+        return Response(serializer.data)
 
 
+# ================================== 8. Fees =====================
 class FeesView(APIView):
     """ A class to create api for Fees """
 
@@ -374,9 +389,9 @@ class FeesView(APIView):
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, madrasha_slug, formate=None):
+    def get(self, request, madrasha_slug, class_id, formate=None):
         """ showing a list of Fees objects"""
-        fees = Fees.objects.filter(madrasha__slug=madrasha_slug)
+        fees = Fees.objects.filter(madrasha__slug=madrasha_slug, madrasha_class__id=class_id)
         serializer = FeesListSerializer(fees, many=True)
         return Response(serializer.data)
 
@@ -414,7 +429,7 @@ class FeesDetailview(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# ================================== 8. Session =====================
+# ================================== 9. Session =====================
 
 class SessionView(APIView):
     """ A class to create api for Session """
@@ -467,7 +482,7 @@ class SessionDetailview(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# ================================== 9. Exam rules =====================
+# ================================== 10. Exam rules =====================
 
 class ExamRulesView(APIView):
     """ A class to create api for Session """
@@ -520,7 +535,7 @@ class ExamRulesDetailview(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# ============== 10. Buidling =========================
+# ============== 11. Buidling =========================
 class BuildingView(mixins.CreateModelMixin, mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Building.objects.all()
 
@@ -574,7 +589,7 @@ class BuildingDetailView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# ============== 11. Room =========================
+# ============== 12. Room =========================
 class RoomView(mixins.CreateModelMixin, mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Room.objects.all()
 
@@ -635,7 +650,7 @@ class RoomDetailView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# ============== 12. Seat =========================
+# ============== 13. Seat =========================
 class SeatView(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Seat.objects.all()
 
