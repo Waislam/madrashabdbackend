@@ -110,14 +110,14 @@ class StudentIncomeCreateView(APIView):
         requested_data["student"] = student_id
 
         madrasha_instance = Madrasha.objects.get(id=requested_data['madrasha'])
-        created_by = user.objects.get(id=requested_data['user_id'])
+        created_by = user.objects.get(id=requested_data['created_by'])
         student_inactance = Student.objects.get(id=requested_data['student'])
         student_income = {
             "madrasha": requested_data["madrasha"],
             "student": requested_data["student"],
             "total_amount": requested_data["total_amount"],
             "paid_date": requested_data["paid_date"],
-            "created_by": requested_data["user_id"]
+            "created_by": requested_data["created_by"]
         }
         st_income = StudentIncome(
             madrasha=madrasha_instance,
