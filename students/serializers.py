@@ -8,7 +8,7 @@ from rest_framework import serializers
 
 from settingapp.serializers import DepartmentSerializer, ClassGroupSerializer, ShiftSerializer, SessionSerializer, \
     ClassSerializer
-from .models import Student, AcademicFess, Parent
+from .models import Student, AcademicFess, Parent, FessInfo
 from accounts.models import Address, CustomUser
 from accounts.serializers import AddressSerializer, CustomUserSerializer, AddressDetailSerializer, MadrashaSerializer, \
     CustomUserListSerializer, CustomUserUpdateSerializer
@@ -68,6 +68,7 @@ class StudentListSerializer(serializers.ModelSerializer):
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'monthly_tution_fee', 'boarding_feee',
+                  'admission_fee', 'transport_fee',
                   'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
 
 
@@ -96,7 +97,7 @@ class StudentSerializer(serializers.ModelSerializer):
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'monthly_tution_fee', 'boarding_feee',
-                  'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
+                  'admission_fee', 'transport_fee', 'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
 
     # def user_first_name(self, obj):
     #     first_name = obj.user.first_name
@@ -256,3 +257,10 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+class FessInfoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FessInfo
+        fields = '__all__'

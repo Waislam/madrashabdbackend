@@ -107,6 +107,7 @@ class Session(models.Model):
 
 class FeesCategory(models.Model):
     category_name = models.CharField(max_length=150, blank=True, null=True)
+    madrash = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_fees_category', blank=True, null=True)
 
     def __str__(self):
         return self.category_name
@@ -114,7 +115,7 @@ class FeesCategory(models.Model):
 
 class Fees(models.Model):
     name = models.CharField(max_length=150, blank=True)
-    # category = models.ForeignKey(FeesCategory, on_delete=models.SET_NULL, blank=True, null=True)
+    category = models.ForeignKey(FeesCategory, on_delete=models.SET_NULL, blank=True, null=True)
     department = models.ForeignKey(Department, on_delete=models.PROTECT, related_name='department_fees')
     madrasha_class = models.ForeignKey(MadrashaClasses, on_delete=models.PROTECT, related_name='class_fees')
     amount = models.FloatField()
@@ -122,7 +123,7 @@ class Fees(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_fees')
 
     class Meta:
-        # unique_together = [['name', 'madrasha']]
+        unique_together = [['name', 'madrasha']]
         ordering = ['name']
 
     def __str__(self):
