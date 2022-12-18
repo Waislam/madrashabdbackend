@@ -40,18 +40,18 @@ class AcademicFeesSerializer(serializers.ModelSerializer):
 
 
 class StudentListSerializer(serializers.ModelSerializer):
-    user = CustomUserListSerializer()
-    madrasha = MadrashaSerializer()
-    present_address = AddressDetailSerializer()
-    permanent_address = AddressDetailSerializer()
-    father_info = ParentSerializer()
-    mother_info = ParentSerializer()
-    admitted_department = DepartmentSerializer()
-    admitted_class = ClassSerializer()
-    admitted_group = ClassGroupSerializer()
-    admitted_shift = ShiftSerializer()
-    admitted_session = SessionSerializer()
-    academic_fees = AcademicFeesSerializer()
+    # user = CustomUserListSerializer()
+    # madrasha = MadrashaSerializer()
+    # present_address = AddressDetailSerializer()
+    # permanent_address = AddressDetailSerializer()
+    # father_info = ParentSerializer()
+    # mother_info = ParentSerializer()
+    # admitted_department = DepartmentSerializer()
+    # admitted_class = ClassSerializer()
+    # admitted_group = ClassGroupSerializer()
+    # admitted_shift = ShiftSerializer()
+    # admitted_session = SessionSerializer()
+    # academic_fees = AcademicFeesSerializer()
 
     class Meta:
         model = Student
@@ -70,6 +70,7 @@ class StudentListSerializer(serializers.ModelSerializer):
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'monthly_tution_fee', 'boarding_feee',
                   'admission_fee', 'transport_fee',
                   'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
+        depth = 2
 
 
 class StudentSerializer(serializers.ModelSerializer):
