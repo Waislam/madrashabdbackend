@@ -260,8 +260,32 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
         return instance
 
 
-class FessInfoSerializer(serializers.ModelSerializer):
+class OldStudentUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ['admitted_department', 'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll',
+                  'admitted_session', 'monthly_tution_fee', 'boarding_feee',
+                  'admission_fee', 'transport_fee', 'talimi_murobbi_name', 'eslahi_murobbi_name']
 
+        def update(self, instance, validated_data):
+            instance.admitted_department = validated_data.get('admitted_department', instance.admitted_department)
+            instance.admitted_class = validated_data.get('admitted_class', instance.admitted_class)
+            instance.admitted_group = validated_data.get('admitted_group', instance.admitted_group)
+            instance.admitted_shift = validated_data.get('admitted_shift', instance.admitted_shift)
+            instance.admitted_roll = validated_data.get('admitted_roll', instance.admitted_roll)
+            instance.admitted_session = validated_data.get('admitted_session', instance.admitted_session)
+            instance.monthly_tution_fee = validated_data.get('monthly_tution_fee', instance.monthly_tution_fee)
+            instance.boarding_feee = validated_data.get('boarding_feee', instance.boarding_feee)
+            instance.admission_fee = validated_data.get('admission_fee', instance.admission_fee)
+            instance.transport_fee = validated_data.get('transport_fee', instance.transport_fee)
+            instance.talimi_murobbi_name = validated_data.get('talimi_murobbi_name', instance.talimi_murobbi_name)
+            instance.eslahi_murobbi_name = validated_data.get('eslahi_murobbi_name', instance.eslahi_murobbi_name)
+
+            instance.save()
+            return instance
+
+
+class FessInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = FessInfo
         fields = '__all__'
