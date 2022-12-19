@@ -377,6 +377,31 @@ class FeesCategoryView(APIView):
         return Response(serializer.data)
 
 
+class FeeCategoryDetailView(APIView):
+    def get_object(self, pk):
+        """get single Books obj"""
+
+        try:
+            return FeesCategory.objects.get(id=pk)
+        except FeesCategory.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, formate=None):
+        """details veiw for single obj"""
+        obj = self.get_object(pk)
+        serializer = FeesCategoryListSerializer(obj)
+        return Response(serializer.data)
+
+    def put(self, request, pk, formate=None):
+        """update view"""
+        obj = self.get_object(pk)
+        serializer = FeesCategorySerializer(obj, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
 # ================================== 8. Fees =====================
 class FeesView(APIView):
     """ A class to create api for Fees """
@@ -389,6 +414,14 @@ class FeesView(APIView):
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+    def get(self, request, madrasha_slug, formate=None):
+        """ showing a list of Fees objects"""
+        fees = Fees.objects.filter(madrasha__slug=madrasha_slug, madrasha_class__id=class_id)
+        serializer = FeesListSerializer(fees, many=True)
+        return Response(serializer.data)
+
+
+class FeesViewByClass(APIView):
     def get(self, request, madrasha_slug, class_id, formate=None):
         """ showing a list of Fees objects"""
         fees = Fees.objects.filter(madrasha__slug=madrasha_slug, madrasha_class__id=class_id)
