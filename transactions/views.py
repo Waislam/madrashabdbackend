@@ -175,11 +175,12 @@ class StudentIncomeCreateView(APIView):
                         paid_amount=obj["paid_amount"]
                     )
         return Response({"status": True, "message": "Operation has been done successfully"})
+
 class StudentIncomeGetUnpaidView(APIView):
     """
     This view creating both studentincome at transaction and feesInfo at student model
     """
-    def post(self, request, madrasha_slug, formate=None):
+    def post(self, request, madrasha_slug,type, formate=None):
         """Method to create Income from student obj"""
 
         requested_data = request.data

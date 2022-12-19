@@ -21,7 +21,8 @@ urlpatterns = [
 
     path('<int:madrasha_slug>/student-income/', StudentIncomeView.as_view()),
     path('<madrasha_slug>/student-income/create/', StudentIncomeCreateView.as_view()),
-    path('<madrasha_slug>/student-income/unpaid/', StudentIncomeGetUnpaidView.as_view()),
+    path('<madrasha_slug>/student-income/unpaid/<type>', StudentIncomeGetUnpaidView.as_view()),
+    path('<madrasha_slug>/student-income/unpaid/<type>', StudentIncomeGetUnpaidView.as_view()),
     path('student-income/<int:pk>/', StudentIncomeDetailView.as_view()),
 
     path('<int:madrasha_slug>/other-income/', OtherIncomeView.as_view()),
