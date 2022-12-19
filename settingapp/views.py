@@ -364,7 +364,7 @@ class BooksDetailview(APIView):
 
 # ======================= 7. FeesCategory ===============
 class FeesCategoryView(APIView):
-    def post(self, request, formate=None):
+    def post(self, request, madrasha_slug, formate=None):
         serializer = FeesCategorySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -372,7 +372,7 @@ class FeesCategoryView(APIView):
         return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, madrasha_slug, formate=None):
-        obj = FeesCategory.objects.all(madrash__slug=madrasha_slug)
+        obj = FeesCategory.objects.filter(madrash__slug=madrasha_slug)
         serializer = FeesCategoryListSerializer(obj, many=True)
         return Response(serializer.data)
 
