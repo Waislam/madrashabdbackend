@@ -177,18 +177,13 @@ class StudentIncomeCreateView(APIView):
         return Response({"status": True, "message": "Operation has been done successfully"})
 
 class StudentIncomeGetUnpaidView(APIView):
-    """
-    This view creating both studentincome at transaction and feesInfo at student model
-    """
     def post(self, request, madrasha_slug, formate=None):
-        """Method to create Income from student obj"""
 
         requested_data = request.data
         student = requested_data["student"]
         student_id = Student.objects.get(student_id=student).id
 
         madrasha_instance = Madrasha.objects.get(id=requested_data['madrasha'])
-        created_by = user.objects.get(id=requested_data['user_id'])
         student_inactance = Student.objects.get(id=requested_data['student'])
         monthly_tution_fee = student_inactance.monthly_tution_fee
         academic_fee = student_inactance.academic_fees
@@ -198,82 +193,46 @@ class StudentIncomeGetUnpaidView(APIView):
 
         print(requested_data)
         print(student_inactance.monthly_tution_fee)
-        get_all_unpaid = FessInfo.objects.filter(student=student_id,fees_type=requested_data["fees_type"])
-        print("fees list ",get_all_unpaid)
-
+        get_all_paid_fees = FessInfo.objects.filter(student=student_id,fees_type=requested_data["fees_type"])
+        print("fees list ",get_all_paid_fees)
         due_fees = []
-        for fees in get_all_unpaid:
+        months = []
+        today = datetime.now()
+        current_month = today.strftime("%m")
+
+#         last_month = first - timedelta(days=31*2)
+#         print(last_month.strftime("%Y-%m"))
+
+        for month in range(int(current_month)-1):
+            month += 1
+            first = today.replace(day=31)
+            last_month = first - timedelta(days=31*month)
+            months.append(last_month.strftime("%Y-%m"))
+
+        total_due = 0
+        for fees in get_all_paid_fees:
+            date =fees.paid_date.strftime("%Y-%m")
+            due_amount = fees.current_fee - fees.paid_amount
+
+            if(date not in months):
+                print("dus month ",date)
+                months.remove(date)
+
             if(fees.paid_amount < fees.current_fee):
-                print("fees list ",fees.paid_date)
-                print("fees amount ",fees.paid_amount)
-                print("current amount ",fees.current_fee)
-                due_amount = fees.current_fee - fees.paid_amount
-                data = {'date' :fees.paid_date, 'amount': due_amount}
+#                 print("fees list ",fees.paid_date)
+#                 print("fees amount ",fees.paid_amount)
+#                 print("current amount ",fees.current_fee)
+                total_due += due_amount
+                data = {'date' :str(date), 'due_amount': due_amount}
                 due_fees.append(data)
-#         student_income = {
-#             "madrasha": requested_data["madrasha"],
-#             "student": requested_data["student"],
-#             "total_amount": requested_data["total_amount"],
-#             "paid_date": requested_data["paid_date"],
-#             "created_by": requested_data["user_id"]
-#         }
-#         st_income = StudentIncome(
-#             madrasha=madrasha_instance,
-#             student=student_inactance,
-#             total_amount=requested_data["total_amount"],
-#             paid_date=requested_data["paid_date"],
-#             created_by=created_by
-#         )
-#         st_income.save()
-        # StudentIncome.objects.create(**student_income)
-        student_income_id = StudentIncome.objects.all().last()
-        fees = []
-        for obj in requested_data['fees_detail']:
-            date_format = "%Y-%m-%d"
-            from_date = datetime.strptime(str(obj["from_date"]), date_format)
-            to_date = datetime.strptime(str(obj["to_date"]), date_format)
-            date_difference = (to_date.year - from_date.year) * 12 + (to_date.month - from_date.month)
-            month_value = date_difference + 1
-            print(month_value)
-            if month_value == 1:
-                obj['madrasha'] = madrasha_instance
-                obj["student"] = student_inactance
-                obj["student_income"] = student_income_id
-                obj["paid_date"] = from_date
-                FessInfo.objects.create(
-                    madrasha=obj['madrasha'],
-                    student=obj["student"],
-                    student_income=obj["student_income"],
-                    current_fee=obj["current_fee"],
-                    fees_type=obj["fees_type"],
-                    # fees_type_term=obj["fees_type_term"]
-                    paid_date=obj["paid_date"],
-                    paid_amount=obj["paid_amount"]
-                )
-            else:
-                x = from_date
-                full_year = x.year
-                month = x.month
-                days = x.day
+        for due_date in months:
+            total_due += int(monthly_tution_fee)
+            data = {'date' :str(due_date), 'due_amount': monthly_tution_fee}
+            due_fees.append(data)
 
-#                 for each in range(month_value):
-#                     from_date = str(full_year) + "-" + str(month + each) + "-" + str(days)
-#                     obj['madrasha'] = madrasha_instance
-#                     obj["student"] = student_inactance
-#                     obj["student_income"] = student_income_id
-#                     obj["paid_date"] = from_date
-#                     FessInfo.objects.create(
-#                         madrasha=obj['madrasha'],
-#                         student=obj["student"],
-#                         student_income=obj["student_income"],
-#                         current_fee=obj["current_fee"],
-#                         fees_type=obj["fees_type"],
-#                         # fees_type_term=obj["fees_type_term"]
-#                         paid_date=obj["paid_date"],
-#                         paid_amount=obj["paid_amount"]
-#                     )
-        return Response({"status": True, "message": "Operation has been done successfully"})
-
+        print(due_fees)
+        print(months)
+        return Response({"status": 200,"fees_type":requested_data["fees_type"],"total_due":total_due, "data": due_fees})
 
 class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin,
                         generics.GenericAPIView):
