@@ -214,7 +214,7 @@ class StudentIncomeGetUnpaidView(APIView):
             date =fees.paid_date.strftime("%Y-%m")
             due_amount = fees.current_fee - fees.paid_amount
 
-            if(date not in months):
+            if(date in months):
                 print("dus month ",date)
                 months.remove(date)
 
@@ -231,6 +231,7 @@ class StudentIncomeGetUnpaidView(APIView):
             due_fees.append(data)
 
         print(due_fees)
+
         print(months)
         return Response({"status": 200,"fees_type":requested_data["fees_type"],"total_due":total_due, "data": due_fees})
 
