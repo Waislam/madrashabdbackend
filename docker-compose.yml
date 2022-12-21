@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 
 services:
   web:
@@ -17,8 +17,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=madrasha
-      - POSTGRES_PASSWORD=madrasha
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
       - POSTGRES_DB=madrasha_db
 
 volumes:

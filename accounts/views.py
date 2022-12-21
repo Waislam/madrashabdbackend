@@ -238,6 +238,7 @@ class CustomAuthToken(ObtainAuthToken, APIView):
         user_madrasha = MadrashaUserListing.objects.get(user=user_data)
         madrasha = Madrasha.objects.get(slug=user_madrasha.madrasha.slug)
         user_info = CustomUserLoginSerializer(model_to_dict(user_data))
+        # print("madrasha_info: ", madrasha.pk, madrasha.name, madrasha.madrasha_address.address_info)
 
         return Response({
             'status': True,
@@ -246,6 +247,16 @@ class CustomAuthToken(ObtainAuthToken, APIView):
             "role": "Admin",
             # 'user_madrasha_id': madrasha.pk,
             'user_madrasha_id': madrasha.pk,
+            'user_madrasha': {
+                'madrasha_id': madrasha.pk,
+                'name': madrasha.name,
+                'madrasha_address': {
+                    'address_id': madrasha.madrasha_address.id,
+                    'address_district': madrasha.madrasha_address.district.name,
+                    'address_post_office': madrasha.madrasha_address.post_office.name,
+                    'address_info': madrasha.madrasha_address.address_info
+                }
+            },
             'user_madrasha_slug': madrasha.slug,
             'user_madrasha_code': madrasha.madrasha_code,
         })

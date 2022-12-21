@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import Http404
 from rest_framework.response import Response
-from .serializers import StudentSerializer, StudentListSerializer, StudentSerializerUpdate
+from .serializers import StudentSerializer, StudentListSerializer, StudentSerializerUpdate, OldStudentUpdateSerializer
 from rest_framework.views import APIView
 from rest_framework import mixins, generics
 from rest_framework import status
@@ -10,6 +10,7 @@ from .pagination import CustomPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from .filters import StudentFilter
+# from dateutil import relativedelta
 
 
 class StudentView(
@@ -20,6 +21,7 @@ class StudentView(
     """Student Create and list view"""
 
     queryset = Student.objects.all()
+
     # filter_backends = [DjangoFilterBackend, SearchFilter]
     # filterset_class = StudentFilter
     # search_fields = ["student_id"]
@@ -50,6 +52,7 @@ class StudentView(
 
 class StudentDetailView(APIView):
     """this class is for CRUD"""
+
     def get_object(self, slug):
         """For getting single obj with slug field"""
         try:
@@ -81,9 +84,42 @@ class StudentDetailView(APIView):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    # def patch(self, request, slug, formate=None):
+    #     # student = self.get_object(slug)
+    #     student = Student.objects.get(slug=slug)
+    #     serializer = StudentSerializerUpdate(student, data=request.data, partial=True)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(
+    #             {
+    #                 "status": True,
+    #                 "message": "student profile has been updated successfully",
+    #                 "data": serializer.data,
+    #             }
+    #         )
+    #     return Response(
+    #         {"status": False, "message": serializer.errors},
+    #         status=status.HTTP_400_BAD_REQUEST,
+    #     )
+
+
+class OldStudentUpdateView(APIView):
+    def patch(self, request, slug, formate=None, **kwargs):
+        student = Student.objects.get(slug=slug)
+        serializer = OldStudentUpdateSerializer(student, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                "status": True,
+                "data": serializer.data,
+                "message": "Student data has been updated"
+            })
+        return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class StudentDetailBySlugView(APIView):
     """this class is for CRUD"""
+
     def get_object(self, student_id):
         """For getting single obj with slug field"""
         try:
