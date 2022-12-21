@@ -114,20 +114,23 @@ class FeesCategory(models.Model):
 
 
 class Fees(models.Model):
-    name = models.CharField(max_length=150, blank=True)
+    term_name = models.CharField(max_length=150, blank=True, null=True)
     category = models.ForeignKey(FeesCategory, on_delete=models.SET_NULL, blank=True, null=True)
     department = models.ForeignKey(Department, on_delete=models.PROTECT, related_name='department_fees')
     madrasha_class = models.ForeignKey(MadrashaClasses, on_delete=models.PROTECT, related_name='class_fees')
-    amount = models.FloatField()
+    amount = models.IntegerField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_fees')
+    is_first_term = models.BooleanField(default=False)
+    is_second_term = models.BooleanField(default=False)
+    is_third_term = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = [['name', 'madrasha']]
-        ordering = ['name']
+        unique_together = [['term_name', 'madrasha']]
+        ordering = ['term_name']
 
     def __str__(self):
-        return self.name
+        return self.term_name
 
 
 class ExamRules(models.Model):

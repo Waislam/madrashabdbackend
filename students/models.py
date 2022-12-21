@@ -176,7 +176,7 @@ class FessInfo(models.Model):
     current_fee = models.IntegerField(blank=True, null=True)
     fees_type = models.CharField(max_length=255, blank=True, null=True)
     for_month = models.CharField(max_length=100, blank=True, null=True)
-    fees_type_term = models.CharField(max_length=100, blank=True, null=True)
+    fees_type_term = models.ForeignKey(Fees, on_delete=models.PROTECT, related_name='examter_fees', blank=True, null=True)
     paid_amount = models.IntegerField(blank=True, null=True)
     paid_date = models.DateField(default=date.today)
 

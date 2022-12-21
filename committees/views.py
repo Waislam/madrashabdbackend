@@ -120,6 +120,7 @@ class PermanentMembersListView(
     def post(self, request, *args, **kwargs):
         """Method to create Committee obj """
         # print('kwargs', **kwargs)
+
         return self.create(request, *args, **kwargs)
 
 
