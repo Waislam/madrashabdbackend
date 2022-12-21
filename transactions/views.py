@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import Http404
 from rest_framework.response import Response
 from datetime import datetime, timedelta
-
+from enum import Enum
 from accounts.models import Madrasha
 from students.models import Student, FessInfo
 from .serializers import (IncomeCategorySerializer, IncomeSubCategorySerializer, StudentIncomeSerializer,
@@ -29,6 +29,13 @@ from django.contrib.auth import get_user_model
 
 user = get_user_model()
 
+
+class FeesType(Enum):
+    ADMISSION = "ADMISSION"
+    MONTHLY_TUITION = "MONTHLY_TUITION"
+    BOARDING = "BOARDING"
+    EXAMINATION = "EXAMINATION"
+    TRANSPORT = "TRANSPORT"
 
 # Create your views here.
 class CategoryView(ListAPIView):
@@ -185,11 +192,52 @@ class StudentIncomeGetUnpaidView(APIView):
 
         madrasha_instance = Madrasha.objects.get(id=requested_data['madrasha'])
         student_inactance = Student.objects.get(id=requested_data['student'])
+        fees_type = requested_data['fees_type']
+
         monthly_tution_fee = student_inactance.monthly_tution_fee
         academic_fee = student_inactance.academic_fees
         boarding_fee = student_inactance.boarding_feee
         admission_fee = student_inactance.admission_fee
         transport_fee = student_inactance.transport_fee
+        tution_fee_active_from = "2022-05-01"
+        boarding_fee_active_from = "2022-01-01"
+        transport_fee_active_from = "2022-01-01"
+
+        today = datetime.now()
+#         start = datetime.strptime(str(today), "%Y-%m-%d")
+#         end = datetime.strptime(str(tution_fee_active_from), "%Y-%m-%d")
+
+#         res = (end.year - start.year) * 12 + (end.month - start.month)
+#         print(res)
+
+        if(fees_type==FeesType.ADMISSION.value):
+            get_admission_fees = FessInfo.objects.filter(student=student_id,fees_type=requested_data["fees_type"],paid_date__year = today.strftime("%Y"))
+            print(get_admission_fees)
+            if not get_admission_fees:
+                total_due = student_inactance.admission_fee
+            else:
+                total_due = 0
+            return Response({"status": 200,"fees_type":fees_type,"total_due":total_due})
+        elif(fees_type==FeesType.EXAMINATION.value):
+            fees_type_term = "MID_TERM"
+            term_date = "2022-10-10"
+            get_examination_fees = FessInfo.objects.filter(student=student_id,fees_type=requested_data["fees_type"],paid_date__year = today.strftime("%Y"))
+
+        if(fees_type==FeesType.MONTHLY_TUITION.value):
+            date_1 = tution_fee_active_from
+        elif(fees_type==FeesType.BOARDING.value):
+            date_1 = boarding_fee_active_from
+        elif(fees_type==FeesType.TRANSPORT.value):
+            date_1 = transport_fee_active_from
+        else:
+            date_1 = today.strftime("%Y-%m-%d")
+
+
+        date_2 = today.strftime("%Y-%m-%d")
+        start = datetime.strptime(date_1, "%Y-%m-%d")
+        end = datetime.strptime(date_2, "%Y-%m-%d")
+        res = (end.year - start.year) * 12 + (end.month - start.month)
+        month_difference = res
 
         print(requested_data)
         print(student_inactance.monthly_tution_fee)
@@ -197,13 +245,12 @@ class StudentIncomeGetUnpaidView(APIView):
         print("fees list ",get_all_paid_fees)
         due_fees = []
         months = []
-        today = datetime.now()
-        current_month = today.strftime("%m")
+#         current_month = today.strftime("%m")
 
 #         last_month = first - timedelta(days=31*2)
 #         print(last_month.strftime("%Y-%m"))
 
-        for month in range(int(current_month)-1):
+        for month in range(int(month_difference)):
             month += 1
             first = today.replace(day=31)
             last_month = first - timedelta(days=31*month)
@@ -233,7 +280,7 @@ class StudentIncomeGetUnpaidView(APIView):
         print(due_fees)
 
         print(months)
-        return Response({"status": 200,"fees_type":requested_data["fees_type"],"total_due":total_due, "data": due_fees})
+        return Response({"status": 200,"fees_type":fees_type,"total_due":total_due, "data": due_fees})
 
 class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin,
                         generics.GenericAPIView):

@@ -168,7 +168,6 @@ class Student(models.Model):
             self.slug = self.student_id
         super().save(*args, **kwargs)
 
-
 class FessInfo(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_student_fees_info')
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
