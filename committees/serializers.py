@@ -35,50 +35,24 @@ class CommitteeSerializers(serializers.ModelSerializer):
 class PermanentMembersListSerializers(serializers.ModelSerializer):
     class Meta:
         model = PermanentMembers
-        fields = [
-            'id',
-            'madrasha',
-            'member_name',
-            'address',
-            'phone_number'
-        ]
-
+        fields = '__all__'
         depth = 2
 
 
 class PermanentMembersSerializers(serializers.ModelSerializer):
     class Meta:
         model = PermanentMembers
-        fields = [
-            'id',
-            'madrasha',
-            'member_name',
-            'address',
-            'phone_number'
-        ]
+        fields = '__all__'
 
 
 class OthersMemberListSerializers(serializers.ModelSerializer):
     class Meta:
         model = OtherMembers
-        fields = [
-            'id',
-            'madrasha',
-            'member_name',
-            'address',
-            'phone_number'
-        ]
-
+        fields = "__all__"
         depth = 2
 
 
 class OthersMemberSerializers(serializers.ModelSerializer):
     class Meta:
         model = OtherMembers
-        fields = [
-            'id',
-            'madrasha',
-            'member_name',
-            'address',
-            'phone_number'
-        ]
+        fields = "__all__"

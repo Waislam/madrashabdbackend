@@ -22,6 +22,10 @@ class PermanentMembers(models.Model):
     member_name = models.CharField(max_length=255, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     phone_number = models.CharField(max_length=20)
+    monthly_contribution = models.IntegerField(blank=True, null=True)
+    yearly_contribution = models.IntegerField(blank=True, null=True)
+    is_monthly_contribution = models.BooleanField(default=False)
+    is_yearly_contribution = models.BooleanField(default=False)
 
     class Meta:
         unique_together = [['phone_number', 'madrasha']]

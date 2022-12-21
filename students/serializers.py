@@ -8,7 +8,7 @@ from rest_framework import serializers
 
 from settingapp.serializers import DepartmentSerializer, ClassGroupSerializer, ShiftSerializer, SessionSerializer, \
     ClassSerializer
-from .models import Student, AcademicFess, Parent
+from .models import Student, AcademicFess, Parent, FessInfo
 from accounts.models import Address, CustomUser
 from accounts.serializers import AddressSerializer, CustomUserSerializer, AddressDetailSerializer, MadrashaSerializer, \
     CustomUserListSerializer, CustomUserUpdateSerializer
@@ -40,18 +40,18 @@ class AcademicFeesSerializer(serializers.ModelSerializer):
 
 
 class StudentListSerializer(serializers.ModelSerializer):
-    user = CustomUserListSerializer()
-    madrasha = MadrashaSerializer()
-    present_address = AddressDetailSerializer()
-    permanent_address = AddressDetailSerializer()
-    father_info = ParentSerializer()
-    mother_info = ParentSerializer()
-    admitted_department = DepartmentSerializer()
-    admitted_class = ClassSerializer()
-    admitted_group = ClassGroupSerializer()
-    admitted_shift = ShiftSerializer()
-    admitted_session = SessionSerializer()
-    academic_fees = AcademicFeesSerializer()
+    # user = CustomUserListSerializer()
+    # madrasha = MadrashaSerializer()
+    # present_address = AddressDetailSerializer()
+    # permanent_address = AddressDetailSerializer()
+    # father_info = ParentSerializer()
+    # mother_info = ParentSerializer()
+    # admitted_department = DepartmentSerializer()
+    # admitted_class = ClassSerializer()
+    # admitted_group = ClassGroupSerializer()
+    # admitted_shift = ShiftSerializer()
+    # admitted_session = SessionSerializer()
+    # academic_fees = AcademicFeesSerializer()
 
     class Meta:
         model = Student
@@ -68,7 +68,9 @@ class StudentListSerializer(serializers.ModelSerializer):
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'monthly_tution_fee', 'boarding_feee',
+                  'admission_fee', 'transport_fee',
                   'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
+        depth = 2
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -96,7 +98,7 @@ class StudentSerializer(serializers.ModelSerializer):
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'monthly_tution_fee', 'boarding_feee',
-                  'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
+                  'admission_fee', 'transport_fee', 'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
 
     # def user_first_name(self, obj):
     #     first_name = obj.user.first_name
@@ -142,7 +144,8 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ['id', 'user', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate',
+        fields = ['id', 'user', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age',
+                  'birth_certificate',
                   'student_nid',
                   'passport_number', 'nationality', 'religion', 'gender', 'present_address', 'permanent_address',
                   'father_info', 'mother_info', 'guardian_name', 'guardian_relation', 'guardian_occupation',
@@ -155,7 +158,7 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'monthly_tution_fee', 'boarding_feee',
-                  'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
+                  'admission_fee', 'transport_fee', 'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
 
     def update(self, instance, validated_data):
         # print("instance detail: ", instance.student_id)
@@ -247,9 +250,42 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
         instance.academic_fees = validated_data.get('academic_fees', instance.academic_fees)
         instance.monthly_tution_fee = validated_data.get('monthly_tution_fee', instance.monthly_tution_fee)
         instance.boarding_feee = validated_data.get('boarding_feee', instance.boarding_feee)
+        instance.admission_fee = validated_data.get('admission_fee', instance.admission_fee)
+        instance.transport_fee = validated_data.get('transport_fee', instance.transport_fee)
         instance.talimi_murobbi_name = validated_data.get('talimi_murobbi_name', instance.talimi_murobbi_name)
         instance.eslahi_murobbi_name = validated_data.get('eslahi_murobbi_name', instance.eslahi_murobbi_name)
         instance.slug = validated_data.get('slug', instance.slug)
 
         instance.save()
         return instance
+
+
+class OldStudentUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ['admitted_department', 'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll',
+                  'admitted_session', 'monthly_tution_fee', 'boarding_feee',
+                  'admission_fee', 'transport_fee', 'talimi_murobbi_name', 'eslahi_murobbi_name']
+
+        def update(self, instance, validated_data):
+            instance.admitted_department = validated_data.get('admitted_department', instance.admitted_department)
+            instance.admitted_class = validated_data.get('admitted_class', instance.admitted_class)
+            instance.admitted_group = validated_data.get('admitted_group', instance.admitted_group)
+            instance.admitted_shift = validated_data.get('admitted_shift', instance.admitted_shift)
+            instance.admitted_roll = validated_data.get('admitted_roll', instance.admitted_roll)
+            instance.admitted_session = validated_data.get('admitted_session', instance.admitted_session)
+            instance.monthly_tution_fee = validated_data.get('monthly_tution_fee', instance.monthly_tution_fee)
+            instance.boarding_feee = validated_data.get('boarding_feee', instance.boarding_feee)
+            instance.admission_fee = validated_data.get('admission_fee', instance.admission_fee)
+            instance.transport_fee = validated_data.get('transport_fee', instance.transport_fee)
+            instance.talimi_murobbi_name = validated_data.get('talimi_murobbi_name', instance.talimi_murobbi_name)
+            instance.eslahi_murobbi_name = validated_data.get('eslahi_murobbi_name', instance.eslahi_murobbi_name)
+
+            instance.save()
+            return instance
+
+
+class FessInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FessInfo
+        fields = '__all__'

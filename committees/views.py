@@ -120,6 +120,7 @@ class PermanentMembersListView(
     def post(self, request, *args, **kwargs):
         """Method to create Committee obj """
         # print('kwargs', **kwargs)
+
         return self.create(request, *args, **kwargs)
 
 
@@ -164,6 +165,25 @@ class PermanentMembersDetail(APIView):
             "message": "PermanentMembers has been delete successfully",
         }
         return Response(context, status=status.HTTP_204_NO_CONTENT)
+
+
+class PermanentMembersDetailsWithPhoneFilter(APIView):
+    """
+    Retrieve, update or delete a PermanentMembers instance.
+    """
+
+    def get_object(self, phone_number):
+        try:
+            return PermanentMembers.objects.get(phone_number=phone_number)
+        except PermanentMembers.DoesNotExist:
+            raise Http404
+
+    def get(self, request, phone_number, format=None):
+        print("phone number: ", phone_number)
+        queryset = self.get_object(phone_number)
+        print("objects: ", queryset)
+        serializer = PermanentMembersListSerializers(queryset)
+        return Response(serializer.data)
 
 
 # OtherMembers 3. ======================

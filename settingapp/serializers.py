@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (Department, Designation, MadrashaClasses,
                      MadrashaGroup, Shift, Session, Books, Fees,
-                     ExamRules, Building, Seat, Room)
+                     ExamRules, Building, Seat, Room, FeesCategory)
 from accounts.serializers import MadrashaSerializer
 
 
@@ -99,16 +99,30 @@ class BooksListSerializer(serializers.ModelSerializer):
         depth = 2
 
 
+class FeesCategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FeesCategory
+        fields = '__all__'
+
+
+class FeesCategoryListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeesCategory
+        fields = '__all__'
+        depth = 2
+
+
 class FeesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fees
-        fields = ('id', 'name', 'amount', 'department', 'madrasha_class', 'is_active', 'madrasha')
+        fields = '__all__'
 
 
 class FeesListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fees
-        fields = ('id', 'name', 'amount', 'department', 'madrasha_class', 'is_active', 'madrasha')
+        fields = '__all__'
         depth = 2
 
 

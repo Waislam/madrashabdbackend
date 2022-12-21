@@ -18,7 +18,8 @@ from .views import (
     FeesDetailview,
     ExamRulesView,
     ExamRulesDetailview,
-    BuildingView, RoomView, BuildingDetailView, RoomDetailView, SeatView, SeatDetailView, RoomListOnBuilding
+    BuildingView, RoomView, BuildingDetailView, RoomDetailView, SeatView, SeatDetailView, RoomListOnBuilding,
+    FeesCategoryView, FeeCategoryDetailView, FeesViewByClass
 )
 
 urlpatterns = [
@@ -44,7 +45,10 @@ urlpatterns = [
     path('<madrasha_slug>/<class_id>/books/', BooksView.as_view()),
     path('books/detail/<int:pk>/', BooksDetailview.as_view()),
 
+    path('<madrasha_slug>/fees-category/', FeesCategoryView.as_view()),
+    path('fees-category/<int:pk>/', FeeCategoryDetailView.as_view()),
     path('<madrasha_slug>/fees/', FeesView.as_view()),
+    path('<madrasha_slug>/<class_id>/fees/', FeesViewByClass.as_view()),
     path('fees/detail/<int:pk>/', FeesDetailview.as_view()),
 
     path('exam-rules/', ExamRulesView.as_view()),

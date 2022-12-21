@@ -23,8 +23,8 @@ class StudentIncomeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StudentIncome
-        fields = ['id', 'madrasha', 'category', 'sub_category', 'student', 'amount', 'for_month', 'to_month', 'for_months',
-                  'paid_date', 'receipt_number', 'student_id', 'voucher_name']
+        fields = ['id', 'madrasha', 'student', 'total_amount', 'from_date', 'to_date',
+                  'paid_date', 'created_by']
 
 
 class StudentIncomeListSerializer(serializers.ModelSerializer):
@@ -34,7 +34,7 @@ class StudentIncomeListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StudentIncome
-        fields = ['id', 'madrasha', 'category', 'sub_category', 'student', 'amount', 'for_month', 'to_month', 'for_months',
+        fields = ['id', 'madrasha', 'student', 'total_amount', 'from_date', 'to_date',
                   'paid_date', 'receipt_number', 'student_id', 'voucher_name']
 
         depth = 3
