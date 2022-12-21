@@ -29,9 +29,9 @@ env.bak/
 venv.bak/
 
 
-#**/migrations/**
-#!**/migrations
-#!**/migrations/__init__.py
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
 
 db.sqlite3
 db.sqlite3-journal
