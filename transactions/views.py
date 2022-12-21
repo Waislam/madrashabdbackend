@@ -26,6 +26,7 @@ from rest_framework.filters import SearchFilter
 from .filters import StudentIncomeFilter, OtherIncomeFilter, AllExpenseFilter
 from students.pagination import CustomPagination
 from django.contrib.auth import get_user_model
+import requests
 
 user = get_user_model()
 
@@ -103,6 +104,90 @@ class TransactionExpenseSubCategory(mixins.ListModelMixin,
         # self.serializer_class = StudentListSerializer
         return self.list(request, *args, **kwargs)
 
+def GetStudentIncomeUnpaid(student,madrasha,fees_type):
+
+     madrasha_instance = Madrasha.objects.get(id=madrasha)
+     student_inactance = Student.objects.get(id=student)
+     student_id = Student.objects.get(student_id=student).id
+
+     monthly_tution_fee = student_inactance.monthly_tution_fee
+     academic_fee = student_inactance.academic_fees
+     boarding_fee = student_inactance.boarding_feee
+     admission_fee = student_inactance.admission_fee
+     transport_fee = student_inactance.transport_fee
+     tution_fee_active_from = "2022-05-01"
+     boarding_fee_active_from = "2022-01-01"
+     transport_fee_active_from = "2022-01-01"
+
+     today = datetime.now()
+     if(fees_type==FeesType.ADMISSION.value):
+         get_admission_fees = FessInfo.objects.filter(student=student_id,fees_type=fees_type,paid_date__year = today.strftime("%Y"))
+         print(get_admission_fees)
+         if not get_admission_fees:
+             total_due = student_inactance.admission_fee
+         else:
+             total_due = 0
+         return Response({"status": 200,"fees_type":fees_type,"total_due":total_due})
+     elif(fees_type==FeesType.EXAMINATION.value):
+         fees_type_term = "MID_TERM"
+         term_date = "2022-10-10"
+         get_examination_fees = FessInfo.objects.filter(student=student_id,fees_type=fees_type,paid_date__year = today.strftime("%Y"))
+     else:
+         if(fees_type==FeesType.MONTHLY_TUITION.value):
+             date_1 = tution_fee_active_from
+         elif(fees_type==FeesType.BOARDING.value):
+             date_1 = boarding_fee_active_from
+         elif(fees_type==FeesType.TRANSPORT.value):
+             date_1 = transport_fee_active_from
+         else:
+             date_1 = today.strftime("%Y-%m-%d")
+
+
+         date_2 = today.strftime("%Y-%m-%d")
+         start = datetime.strptime(date_1, "%Y-%m-%d")
+         end = datetime.strptime(date_2, "%Y-%m-%d")
+         res = (end.year - start.year) * 12 + (end.month - start.month)
+         month_difference = res
+
+         print(student_inactance.monthly_tution_fee)
+         get_all_paid_fees = FessInfo.objects.filter(student=student_id,fees_type=fees_type)
+         print("fees list ",get_all_paid_fees)
+         due_fees = []
+         months = []
+         for month in range(int(month_difference)):
+             month += 1
+             first = today.replace(day=31)
+             last_month = first - timedelta(days=31*month)
+             months.append(last_month.strftime("%Y-%m"))
+         total_due = 0
+         for fees in get_all_paid_fees:
+             date =fees.paid_date.strftime("%Y-%m")
+             due_amount = fees.current_fee - fees.paid_amount
+             print("date===", date)
+             print("amount===", due_amount)
+             if(date in months):
+                 print("dus month ",date)
+                 months.remove(date)
+             if(fees.paid_amount < fees.current_fee):
+ #                 print("fees list ",fees.paid_date)
+ #                 print("fees amount ",fees.paid_amount)
+ #                 print("current amount ",fees.current_fee)
+                 total_due += due_amount
+                 data = {'id':fees.id,'date' :str(date), 'due_amount': due_amount}
+                 due_fees.append(data)
+         print("ddd",due_fees)
+         for due_date in months:
+             total_due += int(monthly_tution_fee)
+             data = {'id':'','date' :str(due_date), 'due_amount': monthly_tution_fee}
+             due_fees.append(data)
+         print(months)
+         response = {
+                  "status": 200,
+                  "fees_type":fees_type,
+                  "total_due": total_due,
+                  "data": due_fees
+             }
+         return response
 
 class StudentIncomeCreateView(APIView):
     """
@@ -119,6 +204,10 @@ class StudentIncomeCreateView(APIView):
         madrasha_instance = Madrasha.objects.get(id=requested_data['madrasha'])
         created_by = user.objects.get(id=requested_data['user_id'])
         student_inactance = Student.objects.get(id=requested_data['student'])
+
+#         get_unpaid_data = GetStudentIncomeUnpaid(requested_data['student'],requested_data['madrasha'],"MONTHLY_TUITION")
+#         print("test View",get_unpaid_data)
+
         student_income = {
             "madrasha": requested_data["madrasha"],
             "student": requested_data["student"],
@@ -134,6 +223,7 @@ class StudentIncomeCreateView(APIView):
             created_by=created_by
         )
         st_income.save()
+
         # StudentIncome.objects.create(**student_income)
         student_income_id = StudentIncome.objects.all().last()
         fees = []
@@ -185,102 +275,14 @@ class StudentIncomeCreateView(APIView):
 
 class StudentIncomeGetUnpaidView(APIView):
     def post(self, request, madrasha_slug, formate=None):
-
+        print("method ",request)
         requested_data = request.data
         student = requested_data["student"]
-        student_id = Student.objects.get(student_id=student).id
-
-        madrasha_instance = Madrasha.objects.get(id=requested_data['madrasha'])
-        student_inactance = Student.objects.get(id=requested_data['student'])
+        madrasha = requested_data['madrasha']
         fees_type = requested_data['fees_type']
 
-        monthly_tution_fee = student_inactance.monthly_tution_fee
-        academic_fee = student_inactance.academic_fees
-        boarding_fee = student_inactance.boarding_feee
-        admission_fee = student_inactance.admission_fee
-        transport_fee = student_inactance.transport_fee
-        tution_fee_active_from = "2022-05-01"
-        boarding_fee_active_from = "2022-01-01"
-        transport_fee_active_from = "2022-01-01"
-
-        today = datetime.now()
-#         start = datetime.strptime(str(today), "%Y-%m-%d")
-#         end = datetime.strptime(str(tution_fee_active_from), "%Y-%m-%d")
-
-#         res = (end.year - start.year) * 12 + (end.month - start.month)
-#         print(res)
-
-        if(fees_type==FeesType.ADMISSION.value):
-            get_admission_fees = FessInfo.objects.filter(student=student_id,fees_type=requested_data["fees_type"],paid_date__year = today.strftime("%Y"))
-            print(get_admission_fees)
-            if not get_admission_fees:
-                total_due = student_inactance.admission_fee
-            else:
-                total_due = 0
-            return Response({"status": 200,"fees_type":fees_type,"total_due":total_due})
-        elif(fees_type==FeesType.EXAMINATION.value):
-            fees_type_term = "MID_TERM"
-            term_date = "2022-10-10"
-            get_examination_fees = FessInfo.objects.filter(student=student_id,fees_type=requested_data["fees_type"],paid_date__year = today.strftime("%Y"))
-
-        if(fees_type==FeesType.MONTHLY_TUITION.value):
-            date_1 = tution_fee_active_from
-        elif(fees_type==FeesType.BOARDING.value):
-            date_1 = boarding_fee_active_from
-        elif(fees_type==FeesType.TRANSPORT.value):
-            date_1 = transport_fee_active_from
-        else:
-            date_1 = today.strftime("%Y-%m-%d")
-
-
-        date_2 = today.strftime("%Y-%m-%d")
-        start = datetime.strptime(date_1, "%Y-%m-%d")
-        end = datetime.strptime(date_2, "%Y-%m-%d")
-        res = (end.year - start.year) * 12 + (end.month - start.month)
-        month_difference = res
-
-        print(requested_data)
-        print(student_inactance.monthly_tution_fee)
-        get_all_paid_fees = FessInfo.objects.filter(student=student_id,fees_type=requested_data["fees_type"])
-        print("fees list ",get_all_paid_fees)
-        due_fees = []
-        months = []
-#         current_month = today.strftime("%m")
-
-#         last_month = first - timedelta(days=31*2)
-#         print(last_month.strftime("%Y-%m"))
-
-        for month in range(int(month_difference)):
-            month += 1
-            first = today.replace(day=31)
-            last_month = first - timedelta(days=31*month)
-            months.append(last_month.strftime("%Y-%m"))
-
-        total_due = 0
-        for fees in get_all_paid_fees:
-            date =fees.paid_date.strftime("%Y-%m")
-            due_amount = fees.current_fee - fees.paid_amount
-
-            if(date in months):
-                print("dus month ",date)
-                months.remove(date)
-
-            if(fees.paid_amount < fees.current_fee):
-#                 print("fees list ",fees.paid_date)
-#                 print("fees amount ",fees.paid_amount)
-#                 print("current amount ",fees.current_fee)
-                total_due += due_amount
-                data = {'date' :str(date), 'due_amount': due_amount}
-                due_fees.append(data)
-        for due_date in months:
-            total_due += int(monthly_tution_fee)
-            data = {'date' :str(due_date), 'due_amount': monthly_tution_fee}
-            due_fees.append(data)
-
-        print(due_fees)
-
-        print(months)
-        return Response({"status": 200,"fees_type":fees_type,"total_due":total_due, "data": due_fees})
+        get_unpaid_data = GetStudentIncomeUnpaid(student,madrasha,fees_type)
+        return Response(get_unpaid_data)
 
 class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin,
                         generics.GenericAPIView):
