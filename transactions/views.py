@@ -129,7 +129,7 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
             total_due = student_inactance.admission_fee
         else:
             total_due = 0
-        return Response({"status": 200, "fees_type": fees_type, "total_due": total_due})
+        return ({"status": 200, "fees_type": fees_type, "total_due": total_due})
     elif (fees_type == FeesType.EXAMINATION.value):
         fees_type_term = "MID_TERM"
         term_date = "2022-10-10"
