@@ -139,6 +139,12 @@ class Student(models.Model):
     boarding_feee = models.CharField(max_length=50, blank=True, null=True)
     admission_fee = models.CharField(max_length=50, blank=True, null=True)
     transport_fee = models.CharField(max_length=50, blank=True, null=True)
+    tution_fee_active_from = models.DateField(blank=True, null=True)
+    boarding_fee_active_from = models.DateField(blank=True, null=True)
+    transport_fee_active_from = models.DateField(blank=True, null=True)
+    is_tution_fee = models.BooleanField(default=False)
+    is_boarding_fee = models.BooleanField(default=False)
+    is_transport_fee = models.BooleanField(default=False)
     talimi_murobbi_name = models.CharField(max_length=150, blank=True, null=True)
     eslahi_murobbi_name = models.CharField(max_length=150, blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True)
@@ -168,6 +174,7 @@ class Student(models.Model):
             self.slug = self.student_id
         super().save(*args, **kwargs)
 
+
 class FessInfo(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_student_fees_info')
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
@@ -175,12 +182,14 @@ class FessInfo(models.Model):
     current_fee = models.IntegerField(blank=True, null=True)
     fees_type = models.CharField(max_length=255, blank=True, null=True)
     for_month = models.CharField(max_length=100, blank=True, null=True)
-    fees_type_term = models.ForeignKey(Fees, on_delete=models.PROTECT, related_name='examter_fees', blank=True, null=True)
+    fees_type_term = models.ForeignKey(Fees, on_delete=models.PROTECT, related_name='examter_fees', blank=True,
+                                       null=True)
     paid_amount = models.IntegerField(blank=True, null=True)
     paid_date = models.DateField(default=date.today)
 
     def __str__(self):
         return self.fees_type
+
 
 class MealInfo(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='meal_info_madrashas')
