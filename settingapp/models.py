@@ -1,5 +1,7 @@
 from django.db import models
 from accounts.models import Madrasha
+
+
 # from students.models import Student
 
 
@@ -107,7 +109,8 @@ class Session(models.Model):
 
 class FeesCategory(models.Model):
     category_name = models.CharField(max_length=150, blank=True, null=True)
-    madrash = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_fees_category', blank=True, null=True)
+    madrash = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_fees_category', blank=True,
+                                null=True)
 
     def __str__(self):
         return self.category_name
@@ -119,6 +122,7 @@ class Fees(models.Model):
     department = models.ForeignKey(Department, on_delete=models.PROTECT, related_name='department_fees')
     madrasha_class = models.ForeignKey(MadrashaClasses, on_delete=models.PROTECT, related_name='class_fees')
     amount = models.IntegerField(blank=True, null=True)
+    examination_fee_active_from = models.DateField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_fees')
     is_first_term = models.BooleanField(default=False)
@@ -178,7 +182,8 @@ class Seat(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_seats')
     room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='rooms_seats')
     seat_number = models.IntegerField()
-    student = models.OneToOneField('students.student', on_delete=models.SET_NULL, related_name='student_seat', blank=True, null=True)
+    student = models.OneToOneField('students.student', on_delete=models.SET_NULL, related_name='student_seat',
+                                   blank=True, null=True)
     is_available = models.BooleanField(default=True)
 
     def __str__(self):
