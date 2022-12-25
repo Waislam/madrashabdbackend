@@ -218,7 +218,7 @@ class TeacherUpdateSerializer(serializers.ModelSerializer):
 
 
 class TeacherListSerializer(serializers.ModelSerializer):
-    user = CustomUserListSerializer()
+    # user = CustomUserListSerializer()
     madrasha = MadrashaSerializer()
     present_address = AddressDetailSerializer()
     permanent_address = AddressDetailSerializer()
@@ -236,3 +236,4 @@ class TeacherListSerializer(serializers.ModelSerializer):
             'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', 'department',
             'designation', 'starting_date', 'ending_date', 'slug', 'experience'
         ]
+        depth = 2

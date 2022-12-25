@@ -11,6 +11,7 @@
 local_settings.py
 __pycache__/
 /__pycache__/
+**/__pycache__/
 build/
 coverage/
 dist/
