@@ -40,7 +40,7 @@ class AcademicFeesSerializer(serializers.ModelSerializer):
 
 
 class StudentListSerializer(serializers.ModelSerializer):
-    # user = CustomUserListSerializer()
+    user = CustomUserListSerializer()
     # madrasha = MadrashaSerializer()
     # present_address = AddressDetailSerializer()
     # permanent_address = AddressDetailSerializer()
