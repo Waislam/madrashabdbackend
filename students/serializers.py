@@ -41,6 +41,7 @@ class AcademicFeesSerializer(serializers.ModelSerializer):
 
 class StudentListSerializer(serializers.ModelSerializer):
     user = CustomUserListSerializer()
+
     # madrasha = MadrashaSerializer()
     # present_address = AddressDetailSerializer()
     # permanent_address = AddressDetailSerializer()
@@ -68,7 +69,8 @@ class StudentListSerializer(serializers.ModelSerializer):
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'monthly_tution_fee', 'boarding_feee',
-                  'admission_fee', 'transport_fee',
+                  'admission_fee', 'transport_fee', 'tution_fee_active_from', 'boarding_fee_active_from',
+                  'transport_fee_active_from', 'is_tution_fee', 'is_boarding_fee', 'is_transport_fee',
                   'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
         depth = 2
 
@@ -98,7 +100,9 @@ class StudentSerializer(serializers.ModelSerializer):
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'monthly_tution_fee', 'boarding_feee',
-                  'admission_fee', 'transport_fee', 'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
+                  'admission_fee', 'transport_fee', 'tution_fee_active_from', 'boarding_fee_active_from',
+                  'transport_fee_active_from', 'is_tution_fee', 'is_boarding_fee', 'is_transport_fee',
+                  'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
 
     # def user_first_name(self, obj):
     #     first_name = obj.user.first_name
@@ -158,7 +162,9 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'monthly_tution_fee', 'boarding_feee',
-                  'admission_fee', 'transport_fee', 'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
+                  'admission_fee', 'transport_fee', 'tution_fee_active_from', 'boarding_fee_active_from',
+                  'transport_fee_active_from', 'is_tution_fee', 'is_boarding_fee', 'is_transport_fee',
+                  'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
 
     def update(self, instance, validated_data):
         # print("instance detail: ", instance.student_id)
@@ -252,6 +258,14 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
         instance.boarding_feee = validated_data.get('boarding_feee', instance.boarding_feee)
         instance.admission_fee = validated_data.get('admission_fee', instance.admission_fee)
         instance.transport_fee = validated_data.get('transport_fee', instance.transport_fee)
+        instance.tution_fee_active_from = validated_data.get('tution_fee_active_from', instance.tution_fee_active_from)
+        instance.boarding_fee_active_from = validated_data.get('boarding_fee_active_from',
+                                                               instance.boarding_fee_active_from)
+        instance.transport_fee_active_from = validated_data.get('transport_fee_active_from',
+                                                                instance.transport_fee_active_from)
+        instance.is_tution_fee = validated_data.get('is_tution_fee', instance.is_tution_fee)
+        instance.is_boarding_fee = validated_data.get('is_boarding_fee', instance.is_boarding_fee)
+        instance.is_transport_fee = validated_data.get('is_transport_fee', instance.is_transport_fee)
         instance.talimi_murobbi_name = validated_data.get('talimi_murobbi_name', instance.talimi_murobbi_name)
         instance.eslahi_murobbi_name = validated_data.get('eslahi_murobbi_name', instance.eslahi_murobbi_name)
         instance.slug = validated_data.get('slug', instance.slug)
@@ -265,7 +279,9 @@ class OldStudentUpdateSerializer(serializers.ModelSerializer):
         model = Student
         fields = ['admitted_department', 'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll',
                   'admitted_session', 'monthly_tution_fee', 'boarding_feee',
-                  'admission_fee', 'transport_fee', 'talimi_murobbi_name', 'eslahi_murobbi_name']
+                  'admission_fee', 'transport_fee', 'tution_fee_active_from', 'boarding_fee_active_from',
+                  'transport_fee_active_from', 'is_tution_fee', 'is_boarding_fee', 'is_transport_fee',
+                  'talimi_murobbi_name', 'eslahi_murobbi_name']
 
         def update(self, instance, validated_data):
             instance.admitted_department = validated_data.get('admitted_department', instance.admitted_department)
@@ -278,6 +294,15 @@ class OldStudentUpdateSerializer(serializers.ModelSerializer):
             instance.boarding_feee = validated_data.get('boarding_feee', instance.boarding_feee)
             instance.admission_fee = validated_data.get('admission_fee', instance.admission_fee)
             instance.transport_fee = validated_data.get('transport_fee', instance.transport_fee)
+            instance.tution_fee_active_from = validated_data.get('tution_fee_active_from',
+                                                                 instance.tution_fee_active_from)
+            instance.boarding_fee_active_from = validated_data.get('boarding_fee_active_from',
+                                                                   instance.boarding_fee_active_from)
+            instance.transport_fee_active_from = validated_data.get('transport_fee_active_from',
+                                                                    instance.transport_fee_active_from)
+            instance.is_tution_fee = validated_data.get('is_tution_fee', instance.is_tution_fee)
+            instance.is_boarding_fee = validated_data.get('is_boarding_fee', instance.is_boarding_fee)
+            instance.is_transport_fee = validated_data.get('is_transport_fee', instance.is_transport_fee)
             instance.talimi_murobbi_name = validated_data.get('talimi_murobbi_name', instance.talimi_murobbi_name)
             instance.eslahi_murobbi_name = validated_data.get('eslahi_murobbi_name', instance.eslahi_murobbi_name)
 
