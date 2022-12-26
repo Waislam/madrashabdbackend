@@ -209,8 +209,9 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
         res = (end.year - start.year) * 12 + (end.month - start.month)
         month_difference = res
         print(student_inactance.monthly_tution_fee)
-        get_all_paid_fees = FessInfo.objects.values('paid_date','current_fee').annotate(name_count=Count('paid_date'),paid_amount=Sum('paid_amount')).filter(student=student_id, fees_type=fees_type).order_by('paid_date')
-        print("fees list ", get_all_paid_fees)
+        get_all_paid_fees = FessInfo.objects.values('paid_date','current_fee').annotate(name_count=Count('paid_date'),paid_amount=Sum('paid_amount')).filter(student=student_id, fees_type=fees_type)
+#         print("fees list ", get_all_paid_fees)
+#         print("month_difference ", month_difference)
         due_fees = []
         months = []
         for month in range(int(month_difference)):
@@ -218,32 +219,33 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
             first = today.replace(day=31)
             last_month = first - timedelta(days=31 * month)
             months.append(last_month.strftime("%Y-%m"))
-        total_due = 0
+#         print("months1 ", months)
 #         test = FessInfo.objects.values('paid_date','paid_amount').annotate(paid_date=Count('paid_date')).filter(paid_date_count__gt=1)
 #         test1= FessInfo.objects.values('paid_date').annotate(Count('id')).order_by().filter(id__count__gt=1)
 #         get_duplicate = FessInfo.objects.values('paid_date').annotate(name_count=Count('paid_date'),paid_amount=Sum('paid_amount'))
 #         get_unique = FessInfo.objects.values('paid_date').annotate(name_count=Count('paid_date'),paid_amount=Sum('paid_amount')).exclude(name_count=1)
 #         print("duplicate",get_unique)
-
+        total_due = 0
         for fees in get_all_paid_fees:
             date = fees['paid_date'].strftime("%Y-%m")
+            print("Date ", date)
             paid_amount = fees['paid_amount']
-            current_fee = fees['current_fee']
-            due_amount = current_fee - paid_amount
-            due_amount = current_fee - paid_amount
+            monthly_fee = fees['current_fee']
+            due_amount = monthly_fee - paid_amount
             if (date in months):
 #                 print("dus month ", date)
                 months.remove(date)
-            if (paid_amount < current_fee):
+            if (paid_amount < monthly_fee):
                 #                 print("fees list ",fees.paid_date)
                 #                 print("fees amount ",fees.paid_amount)
                 #                 print("current amount ",fees.current_fee)
                 total_due += due_amount
-                data = {'date': str(date), 'due_amount': due_amount}
+                data = {'date': str(date), 'due_amount': due_amount, 'monthly_fee': monthly_fee}
                 due_fees.append(data)
+        print("months2 ", months)
         for due_date in months:
             total_due += int(monthly_tution_fee)
-            data = {'id': '', 'date': str(due_date), 'due_amount': monthly_tution_fee}
+            data = {'date': str(due_date), 'due_amount': monthly_tution_fee,'monthly_fee': monthly_tution_fee}
             due_fees.append(data)
 #         print(months)
         response = {
@@ -275,7 +277,6 @@ class StudentIncomeCreateView(APIView):
         madrasha = requested_data['madrasha']
         total_amount = requested_data['total_amount']
         paid_date = requested_data['paid_date']
-
 
         student_income = {
             "madrasha": madrasha,
@@ -313,12 +314,16 @@ class StudentIncomeCreateView(APIView):
             fees_type_term=obj["fees_type_term"]
             print("paid_amount1 ",paid_amount)
             get_unpaid_data = GetStudentIncomeUnpaid(student, madrasha, fees_type)
-
+            total_due_amount = get_unpaid_data["total_amount"]
+            print("get_unpaid_data",get_unpaid_data)
 #             if ((fees_type == FeesType.MONTHLY_TUITION.value) or (fees_type ==FeesType.BOARDING.value) or (fees_type ==FeesType.TRANSPORT.value)):
-            if fees_type in [FeesType.MONTHLY_TUITION.value, FeesType.BOARDING.value,FeesType.TRANSPORT.value]:
-                print("this will do the calculation")
-                if from_date is "":
-    #               print("test View",get_unpaid_data)
+
+            if fees_type in [FeesType.MONTHLY_TUITION.value, FeesType.BOARDING.value, FeesType.TRANSPORT.value]:
+                paid_amount>total_due_amount
+#                 if(paid_amount>total_due_amount):
+#                     temp_due_amount = paid_amount - total_due_amount
+#                     print("temp_due_amount", temp_due_amount)
+                if (total_due_amount > 0 ):
                     for payment in get_unpaid_data["data"]:
                         payment_date = payment['date']
                         payment_due = int(payment['due_amount'])
@@ -329,7 +334,7 @@ class StudentIncomeCreateView(APIView):
                                 madrasha=madrasha_instance,
                                 student=student_inactance,
                                 student_income=student_income_id,
-                                current_fee=current_fee,
+                                current_fee=payment['monthly_fee'],
                                 fees_type=fees_type,
                                 fees_type_term=fees_type_term,
                                 paid_date=payment_date+'-01',
@@ -341,7 +346,7 @@ class StudentIncomeCreateView(APIView):
                                 madrasha=madrasha_instance,
                                 student=student_inactance,
                                 student_income=student_income_id,
-                                current_fee=current_fee,
+                                current_fee=payment['monthly_fee'],
                                 fees_type=fees_type,
                                 fees_type_term=fees_type_term,
                                 paid_date=payment_date+'-01',
@@ -350,45 +355,45 @@ class StudentIncomeCreateView(APIView):
                             break
 
                 print("paid_amount2 ",paid_amount)
-                return Response(get_unpaid_data)
+#                 return Response(get_unpaid_data)
 
-                if month_value == 1:
-                    obj['madrasha'] = madrasha_instance
-                    obj["student"] = student_inactance
-                    obj["student_income"] = student_income_id
-                    obj["paid_date"] = from_date
-                    FessInfo.objects.create(
-                        madrasha=obj['madrasha'],
-                        student=obj["student"],
-                        student_income=obj["student_income"],
-                        current_fee=obj["current_fee"],
-                        fees_type=obj["fees_type"],
-                        # fees_type_term=obj["fees_type_term"]
-                        paid_date=obj["paid_date"],
-                        paid_amount=obj["paid_amount"]
-                    )
-                else:
-                    x = from_date
-                    full_year = x.year
-                    month = x.month
-                    days = x.day
-
-                    for each in range(month_value):
-                        from_date = str(full_year) + "-" + str(month + each) + "-" + str(days)
-                        obj['madrasha'] = madrasha_instance
-                        obj["student"] = student_inactance
-                        obj["student_income"] = student_income_id
-                        obj["paid_date"] = from_date
-                        FessInfo.objects.create(
-                            madrasha=obj['madrasha'],
-                            student=obj["student"],
-                            student_income=obj["student_income"],
-                            current_fee=obj["current_fee"],
-                            fees_type=obj["fees_type"],
-                            # fees_type_term=obj["fees_type_term"]
-                            paid_date=obj["paid_date"],
-                            paid_amount=obj["paid_amount"]
-                        )
+#                 if month_value == 1:
+#                     obj['madrasha'] = madrasha_instance
+#                     obj["student"] = student_inactance
+#                     obj["student_income"] = student_income_id
+#                     obj["paid_date"] = from_date
+#                     FessInfo.objects.create(
+#                         madrasha=obj['madrasha'],
+#                         student=obj["student"],
+#                         student_income=obj["student_income"],
+#                         current_fee=obj["current_fee"],
+#                         fees_type=obj["fees_type"],
+#                         # fees_type_term=obj["fees_type_term"]
+#                         paid_date=obj["paid_date"],
+#                         paid_amount=obj["paid_amount"]
+#                     )
+#                 else:
+#                     x = from_date
+#                     full_year = x.year
+#                     month = x.month
+#                     days = x.day
+#
+#                     for each in range(month_value):
+#                         from_date = str(full_year) + "-" + str(month + each) + "-" + str(days)
+#                         obj['madrasha'] = madrasha_instance
+#                         obj["student"] = student_inactance
+#                         obj["student_income"] = student_income_id
+#                         obj["paid_date"] = from_date
+#                         FessInfo.objects.create(
+#                             madrasha=obj['madrasha'],
+#                             student=obj["student"],
+#                             student_income=obj["student_income"],
+#                             current_fee=obj["current_fee"],
+#                             fees_type=obj["fees_type"],
+#                             # fees_type_term=obj["fees_type_term"]
+#                             paid_date=obj["paid_date"],
+#                             paid_amount=obj["paid_amount"]
+#                         )
 
             if (fees_type == FeesType.ADMISSION.value):
                 FessInfo.objects.create(
