@@ -166,8 +166,6 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
             term_activation_date = obj.examination_fee_active_from.strftime("%Y-%m-%d")
             term_date = datetime.strptime(term_activation_date, "%Y-%m-%d")
             term_fee = obj.amount
-
-
             if first_term_bool:
                 if(current_date >= term_date):
 #                 get_exam_fees = FessInfo.objects.filter(student=student_id, fees_type=fees_type,fees_type_term=ExamTerm.FIRST_TERM.value,
