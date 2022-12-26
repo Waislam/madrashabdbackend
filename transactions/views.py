@@ -146,23 +146,26 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
             total_due = 0
         return ({"status": 200, "fees_type": fees_type, "total_due": total_due})
     elif (fees_type == FeesType.EXAMINATION.value):
+        print("inside of elif just before objs")
         fees_type_term = "MID_TERM"
         term_date = "2022-10-10"
         get_examination_fees = FessInfo.objects.filter(student=student_id, fees_type=fees_type,
                                                        paid_date__year=today.strftime("%Y"))
 
         student_class=student_inactance.admitted_class.id
-        print("student_class",student_class)
+        print("student_class", student_class)
 
         objs = Fees.objects.filter(madrasha=madrasha_instance.id, madrasha_class__id=student_class)
-        print(objs)
+        print("output of examination fee", objs)
         for obj in objs:
-            first_term_bool = obj['is_first_term']
-            second_term_bool = obj['is_second_term']
-            third_term_bool = obj['is_third_term']
-#             if first_term_bool:
-#                 first_term_activation_date = obj.examination_fee_active_from
-#          	    amount = obj['amount']
+            first_term_bool = obj.is_first_term
+            second_term_bool = obj.is_second_term
+            third_term_bool = obj.is_third_term
+            if first_term_bool:
+                first_term_activation_date = obj.examination_fee_active_from
+                print("first term date:", first_term_activation_date)
+
+
 
             print(first_term_bool)
             print(obj.examination_fee_active_from)
