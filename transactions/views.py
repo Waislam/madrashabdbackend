@@ -30,6 +30,7 @@ from students.pagination import CustomPagination
 from django.contrib.auth import get_user_model
 import requests
 from django.db.models import Count,Sum
+from django.forms.models import model_to_dict
 
 user = get_user_model()
 
@@ -161,14 +162,14 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
             first_term_bool = obj.is_first_term
             second_term_bool = obj.is_second_term
             third_term_bool = obj.is_third_term
-            if first_term_bool:
-                first_term_activation_date = obj.examination_fee_active_from
-                print("first term date:", first_term_activation_date)
+#             if first_term_bool:
+#                 first_term_activation_date = obj.examination_fee_active_from
+#                 print("first term date:", first_term_activation_date)
 
 
 
-            print(first_term_bool)
-            print(obj.examination_fee_active_from)
+            print("first term",first_term_bool)
+            print("obj exam",obj.examination_fee_active_from)
     else:
         if (fees_type == FeesType.MONTHLY_TUITION.value):
             date_1 = tution_fee_active_from
@@ -422,9 +423,9 @@ class StudentIncomeDetailView(APIView):
     def get(self, request, pk, formate=None):
         """For getting single object details"""
         student_income = self.get_object(pk)
-        print(student_income)
+        student_fees =  FessInfo.objects.filter(student_income__id=student_income.id).values()
         serializer = StudentIncomeListSerializer(student_income)
-        return Response({"status": True,"data": serializer.data})
+        return Response({"status": True, "income_fees":student_fees, "data": serializer.data})
 
     def put(self, request, pk, formate=None):
         """update single obj details"""
