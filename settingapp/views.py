@@ -742,10 +742,10 @@ def SendSMS(numbers, msg):
     apiEndpoint = settings.SMS_API_ENDPOINT
     apiKey = settings.SMS_API_KEY
     apiSender = settings.SMS_SENDER
-    apiSender = settings.SMS_SENDER
+
     headers = {'content-type': 'application/json'}
     url = apiEndpoint
-    params = {'apikey': apiKey, 'msisdn': apiSender,'apiSender': apiSender}
+    params = {'apikey': apiKey, 'sender': apiSender,'msisdn': numbers,'smstext':msg}
     response = requests.post(url, params=params, headers=headers)
     return response
 
