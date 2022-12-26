@@ -6,6 +6,7 @@ from enum import Enum
 from accounts.models import Madrasha
 from students.models import Student, FessInfo
 from settingapp.models import Fees
+from students.serializers import FessInfoSerializer
 from .serializers import (IncomeCategorySerializer, IncomeSubCategorySerializer, StudentIncomeSerializer,
                           OtherIncomeSerializer,
                           OtherIncomeListSerializer, StudentIncomeListSerializer, AllExpenseListSerializer,
@@ -418,8 +419,9 @@ class StudentIncomeDetailView(APIView):
     def get(self, request, pk, formate=None):
         """For getting single object details"""
         student_income = self.get_object(pk)
+        print(student_income)
         serializer = StudentIncomeListSerializer(student_income)
-        return Response({"status": True, "data": serializer.data})
+        return Response({"status": True,"data": serializer.data})
 
     def put(self, request, pk, formate=None):
         """update single obj details"""
