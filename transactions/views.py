@@ -188,7 +188,7 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
                        data = {'term_name': ExamTerm.THIRD_TERM.value, 'due_amount': term_fee,'term_activation_date':term_activation_date}
                        term_fees.append(data)
                        total_fees +=term_fee
-        return ({"status": 200, "fees_type": fees_type, 'total_amount':total_fees,"term_fees": term_fees,})
+        return ({"status": 200, "fees_type": fees_type, 'total_amount':total_fees,"term_fees": term_fees})
 
     else:
         if (fees_type == FeesType.MONTHLY_TUITION.value):
