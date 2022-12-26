@@ -134,15 +134,16 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
 
 
     today = datetime.now()
+
     if (fees_type == FeesType.ADMISSION.value):
+        total_due = 0
         get_admission_fees = FessInfo.objects.filter(student=student_id, fees_type=fees_type,
                                                      paid_date__year=today.strftime("%Y"))
         print(get_admission_fees)
         if not get_admission_fees:
             total_due = student_inactance.admission_fee
-        else:
-            total_due = 0
-        return ({"status": 200, "fees_type": fees_type, "total_due": total_due})
+
+        return ({"status": 200, "fees_type": fees_type, "total_amount": total_due})
 
     elif (fees_type == FeesType.EXAMINATION.value):
         current_date = datetime.strptime(today.strftime("%Y-%m-%d"), "%Y-%m-%d")
@@ -242,7 +243,7 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
                 due_fees.append(data)
         for due_date in months:
             total_due += int(monthly_tution_fee)
-            data = {'id': '', 'date': str(due_date), 'due_amount': monthly_tution_fee}
+            data = {'id': '', 'date': str(due_date), 'total_amount': monthly_tution_fee}
             due_fees.append(data)
 #         print(months)
         response = {
