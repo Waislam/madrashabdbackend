@@ -243,13 +243,13 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
                 due_fees.append(data)
         for due_date in months:
             total_due += int(monthly_tution_fee)
-            data = {'id': '', 'date': str(due_date), 'total_amount': monthly_tution_fee}
+            data = {'id': '', 'date': str(due_date), 'due_amount': monthly_tution_fee}
             due_fees.append(data)
 #         print(months)
         response = {
             "status": 200,
             "fees_type": fees_type,
-            "total_due": total_due,
+            "total_amount": total_due,
             "data": due_fees
         }
         return response
