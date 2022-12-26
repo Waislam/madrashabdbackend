@@ -154,8 +154,6 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
     elif (fees_type == FeesType.EXAMINATION.value):
         current_date = datetime.strptime(today.strftime("%Y-%m-%d"), "%Y-%m-%d")
         student_class=student_inactance.admitted_class.id
-
-
         term_fees = []
         total_fees=0
         objs = Fees.objects.filter(madrasha=madrasha_instance.id, madrasha_class__id=student_class)
