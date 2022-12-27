@@ -564,30 +564,30 @@ class OtherIncomeGetUnpaidView(APIView):
 
         requested_data = request.data
         member_id = requested_data['member_id']
+        madrasha_id = requested_data['madrasha']
         membership_category = requested_data['category']
         membership_sub_category = requested_data['sub_category']
-        member_id = requested_data['member_id']
         today = datetime.now()
         activation_date = str("2022-05-01")
 
 
-       member_instance = PermanentMembers.objects.get(id=member_id)
-            if member_instance:
-                if member_instance.is_monthly_contribution:
-                    monthly_contribution_activated = member_instance.monthly_activation_date
-                    monthly_contribution_amount = member_instance.monthly_contribution
-                    print(monthly_contribution_activated)
-                    print(monthly_contribution_amount)
-                elif member_instance.is_yearly_contribution:
-                    yearly_contribution_activated = member_instance.yearly_activation_date
-                    yearly_contribution_amount = member_instance.yearly_contribution
-                    print(yearly_contribution_activated)
-                    print(yearly_contribution_amount)
+        member_instance = PermanentMembers.objects.get(id=member_id)
+        if member_instance:
+            if member_instance.is_monthly_contribution:
+                monthly_contribution_activated = member_instance.monthly_activation_date
+                monthly_contribution_amount = member_instance.monthly_contribution
+                print("monthly_contribution_activated", monthly_contribution_activated)
+                print("monthly_contribution_amount", monthly_contribution_amount)
+            if member_instance.is_yearly_contribution:
+                yearly_contribution_activated = member_instance.yearly_activation_date
+                yearly_contribution_amount = member_instance.yearly_contribution
+                print("yearly_contribution_activate", yearly_contribution_activated)
+                print("yearly_contribution_amount", yearly_contribution_amount)
 
 #         membership_category = 5 #Sub_Category ID. Monthly Membership ID = 5, Yearly Membership ID = 6
 #         membership_sub_category = 5 #Sub_Category ID. Monthly Membership ID = 5, Yearly Membership ID = 6
 
-        date_1 = activation_date
+        date_1 = monthly_contribution_activated.strftime("%Y-%m-%d")
 
         date_2 = today.strftime("%Y-%m-%d")
         start = datetime.strptime(date_1, "%Y-%m-%d")
@@ -595,10 +595,16 @@ class OtherIncomeGetUnpaidView(APIView):
         res = (end.year - start.year) * 12 + (end.month - start.month)
         month_difference = res
         print(month_difference)
-#       get_all_paid_membership = OtherIncome.objects.values('paid_date','current_fee').annotate(name_count=Count('paid_date'),paid_amount=Sum('paid_amount')).filter(student=student_id, fees_type=fees_type)
-        get_membership_info = OtherIncome.objects.filter(member=member_id, category=membership_category,sub_category=membership_sub_category)
-        print(get_membership_info)
-
+#         get_all_paid_fees = FessInfo.objects.values('paid_date','current_fee').annotate(name_count=Count('paid_date'),paid_amount=Sum('paid_amount')).filter(student=student_id, fees_type=fees_type)
+        get_all_paid = OtherIncome.objects.values('member').annotate(name_count=Count('member'),amount=Sum('amount')).filter(member=member_id, category=membership_category,sub_category=membership_sub_category)
+#         get_membership_info = OtherIncome.objects.filter(member=member_id, category=membership_category,sub_category=membership_sub_category)
+#         print(get_membership_info)
+        print(get_all_paid)
+        print(get_all_paid['amount'])
+        for obj in get_all_paid:
+#             get_all_paid_membership["amount"]
+            print(obj['member'])
+            print(obj['amount'])
         madrasha = requested_data['madrasha']
         member_id = requested_data['member_id']
         return Response({"status": True, "member_id":member_id})

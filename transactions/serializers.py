@@ -85,7 +85,7 @@ class OtherIncomeListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OtherIncome
-        fields = ['id', 'madrasha', 'category', 'sub_category', 'donar_name', 'amount', 'for_month', 'for_months',
+        fields = ['id', 'madrasha', 'category', 'sub_category', 'donar_name', 'amount','member', 'for_month', 'for_months',
                   'paid_date', 'receipt_book_number', 'receipt_page_number', 'receipt_number', 'voucher_name']
 
         depth = 3
