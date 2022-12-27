@@ -6,9 +6,11 @@
 5. TokenAuthentication
 6. MadrashaUserListing
 7. AvatarUpdateView
+8. PasswordResetView
 '''
 import json
 
+from django.contrib.auth.hashers import check_password
 from django.shortcuts import render
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -30,7 +32,7 @@ from .serializers import (
     PostOfficeSerializer,
     PostCodeSerializer,
     CustomUserLoginSerializer,
-    MadrashaLoginSerializer
+    MadrashaLoginSerializer, PasswordResetSerializer
 )
 
 from rest_framework import status, generics
@@ -93,6 +95,7 @@ class PostOfficeListViewWithDependency(generics.ListAPIView):
             queryset = queryset.filter(district__pk=district)
         return queryset
 
+
 # class PostOfficeList(APIView):
 #     def post(self, request):
 #         district = request.data['district']
@@ -136,6 +139,7 @@ class PostCodeListViewWithDependency(generics.ListAPIView):
         if post_office is not None:
             queryset = queryset.filter(post_office__pk=post_office)
         return queryset
+
 
 # ==================== 2. individual address ============
 
@@ -326,3 +330,21 @@ class UserDetail(
 
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
+
+
+# ===================== 8. PasswordResetView =================
+class PasswordResetView(APIView):
+    def post(self, request, user_id, formate=None):
+        serializer = PasswordResetSerializer(data=request.data)
+        if serializer.is_valid():
+            password = serializer.validated_data['password1']
+            old_password = serializer.validated_data['old_password']
+            user = CustomUser.objects.get(id=user_id)
+            if check_password(old_password, user.password):
+                user.set_password(password)
+                user.save()
+                return Response({"message": "password reset successfully"}, status=status.HTTP_200_OK)
+            return Response({"message": "Your old password doesn't match"}, status=status.HTTP_400_BAD_REQUEST)
+        # return Response({"message": serializer.errors, "status": status.HTTP_400_BAD_REQUEST})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

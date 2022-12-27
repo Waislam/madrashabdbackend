@@ -84,7 +84,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
 # ======================Custom User=====================
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
@@ -104,6 +103,13 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+]
+
+# password hasher
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
 ]
 
 # Internationalization
@@ -141,7 +147,6 @@ try:
 except ImportError:
     pass
 
-
 REST_FRAMEWORK = {
     # for custom pagination in mixin
     # 'DEFAULT_PAGINATION_CLASS': 'students.pagination.CustomPagination',
@@ -155,4 +160,3 @@ if DEBUG:
     CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8087', 'http://178.128.94.215:1337', 'http://178.128.94.215']
 else:
     CSRF_TRUSTED_ORIGINS = ['http://178.128.94.215:1337', "http://178.128.94.215"]
-

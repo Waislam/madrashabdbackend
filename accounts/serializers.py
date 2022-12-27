@@ -4,6 +4,7 @@
 3. User
 4. MadrashaUserlisting
 5. AvatarUpdateSerializer
+6. PasswordResetSerializer
 
 """
 from django.contrib.auth.models import Group
@@ -243,3 +244,23 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         exclude = ['password']
+
+
+# ======================= 6. PasswordResetSerializer ===================
+class PasswordResetSerializer(serializers.Serializer):
+    old_password = serializers.CharField()
+    password1 = serializers.CharField(min_length=8, max_length=64)
+    password2 = serializers.CharField(min_length=8, max_length=64)
+
+    class Meta:
+        fields = ['old_password', 'password1', 'password2']
+
+    def validate(self, attrs):
+        password1 = attrs.get('password1')
+        password2 = attrs.get('password2')
+
+        # if len(password1) < 8 or len(password1) > 64:
+        #     raise serializers.ValidationError({"message": "You have problem with password length"})
+        if password1 != password2:
+            raise serializers.ValidationError({"message": "Both password must match"})
+        return super().validate(attrs)

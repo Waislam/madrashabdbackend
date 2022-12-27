@@ -13,7 +13,7 @@ from .views import (
     MadrashaUserListingView,
     AvatarUpdateView,
     UserDetail,
-    ThanaListViewWithDependency, PostOfficeListViewWithDependency, PostCodeListViewWithDependency
+    ThanaListViewWithDependency, PostOfficeListViewWithDependency, PostCodeListViewWithDependency, PasswordResetView
 )
 
 urlpatterns = [
@@ -40,4 +40,7 @@ urlpatterns = [
     path('madrasha-admin/', UserRegistrationView.as_view()),
     path('mu-listing/', MadrashaUserListingView.as_view()),
     path('avatar/<int:pk>/', AvatarUpdateView.as_view()),
+
+    #password reset
+    path('madrasha-admin-pass-reset/<user_id>/', PasswordResetView.as_view())
 ]
