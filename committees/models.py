@@ -24,6 +24,8 @@ class PermanentMembers(models.Model):
     phone_number = models.CharField(max_length=20)
     monthly_contribution = models.IntegerField(blank=True, null=True)
     yearly_contribution = models.IntegerField(blank=True, null=True)
+    monthly_activation_date= models.DateField(blank=True, null=True)
+    yearly_activation_date= models.DateField(blank=True, null=True)
     is_monthly_contribution = models.BooleanField(default=False)
     is_yearly_contribution = models.BooleanField(default=False)
 

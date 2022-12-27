@@ -434,6 +434,14 @@ class StudentIncomeGetUnpaidView(APIView):
         return Response(get_unpaid_data)
 
 
+class OtherIncomeGetUnpaidView(APIView):
+    def post(self, request, formate=None):
+        print("method ", request)
+        requested_data = request.data
+        madrasha = requested_data['madrasha']
+        member_id = requested_data['member_id']
+        return Response({"status": True, "member_id":member_id})
+
 class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin,
                         generics.GenericAPIView):
     queryset = StudentIncome.objects.all()
