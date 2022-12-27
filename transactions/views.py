@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from datetime import datetime, timedelta
 from enum import Enum
 from accounts.models import Madrasha
+from committees.models import PermanentMembers
 from students.models import Student, FessInfo
 from settingapp.models import Fees
 from students.serializers import FessInfoSerializer
@@ -440,6 +441,18 @@ class OtherIncomeGetUnpaidView(APIView):
         requested_data = request.data
         madrasha = requested_data['madrasha']
         member_id = requested_data['member_id']
+        member_instance = PermanentMembers.objects.get(id=member_id)
+        if member_instance:
+            if member_instance.is_monthly_contribution:
+                monthly_contribution_activated = member_instance.monthly_activation_date
+                monthly_contribution_amount = member_instance.monthly_contribution
+                print(monthly_contribution_activated)
+                print(monthly_contribution_amount)
+            elif member_instance.is_yearly_contribution:
+                yearly_contribution_activated = member_instance.yearly_activation_date
+                yearly_contribution_amount = member_instance.yearly_contribution
+                print(yearly_contribution_activated)
+                print(yearly_contribution_amount)
         return Response({"status": True, "member_id":member_id})
 
 class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin,
