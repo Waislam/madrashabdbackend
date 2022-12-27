@@ -434,14 +434,6 @@ class StudentIncomeGetUnpaidView(APIView):
         return Response(get_unpaid_data)
 
 
-class OtherIncomeGetUnpaidView(APIView):
-    def post(self, request, formate=None):
-        print("method ", request)
-        requested_data = request.data
-        madrasha = requested_data['madrasha']
-        member_id = requested_data['member_id']
-        return Response({"status": True, "member_id":member_id})
-
 class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin,
                         generics.GenericAPIView):
     queryset = StudentIncome.objects.all()
@@ -565,6 +557,36 @@ class OtherIncomeDetailView(APIView):
             {"status": False, "message": serializer.errors},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+class OtherIncomeGetUnpaidView(APIView):
+    def post(self, request, formate=None):
+        print("method ", request)
+
+        requested_data = request.data
+        member_id = requested_data['member_id']
+        membership_category = requested_data['category']
+        membership_sub_category = requested_data['sub_category']
+        member_id = requested_data['member_id']
+        today = datetime.now()
+        activation_date = str("2022-05-01")
+#         membership_category = 5 #Sub_Category ID. Monthly Membership ID = 5, Yearly Membership ID = 6
+#         membership_sub_category = 5 #Sub_Category ID. Monthly Membership ID = 5, Yearly Membership ID = 6
+
+        date_1 = activation_date
+
+        date_2 = today.strftime("%Y-%m-%d")
+        start = datetime.strptime(date_1, "%Y-%m-%d")
+        end = datetime.strptime(date_2, "%Y-%m-%d")
+        res = (end.year - start.year) * 12 + (end.month - start.month)
+        month_difference = res
+        print(month_difference)
+#       get_all_paid_membership = OtherIncome.objects.values('paid_date','current_fee').annotate(name_count=Count('paid_date'),paid_amount=Sum('paid_amount')).filter(student=student_id, fees_type=fees_type)
+        get_membership_info = OtherIncome.objects.filter(member=member_id, category=membership_category,sub_category=membership_sub_category)
+        print(get_membership_info)
+
+        madrasha = requested_data['madrasha']
+        member_id = requested_data['member_id']
+        return Response({"status": True, "member_id":member_id})
 
 
 class AllExpenseView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView):
