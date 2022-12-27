@@ -48,6 +48,10 @@ class ExamTerm(Enum):
     SECOND_TERM = "SECOND_TERM"
     THIRD_TERM = "THIRD_TERM"
 
+class MemrberType(Enum):
+    MONTHLY = "MONTHLY"
+    YEARLY = "YEARLY"
+
 # Create your views here.
 class CategoryView(ListAPIView):
     queryset = IncomeCategory.objects.all()
@@ -268,8 +272,7 @@ class StudentIncomeCreateView(APIView):
 
         requested_data = request.data
         student = requested_data["student"]
-        student_id = Student.objects.get(student_id=student).id
-        requested_data["student"] = student_id
+        student_id = Student.objects.get(id=student)
 
         madrasha_instance = Madrasha.objects.get(id=requested_data['madrasha'])
         created_by = user.objects.get(id=requested_data['user_id'])
@@ -561,54 +564,59 @@ class OtherIncomeDetailView(APIView):
 class OtherIncomeGetUnpaidView(APIView):
     def post(self, request, formate=None):
         print("method ", request)
-
         requested_data = request.data
         member_id = requested_data['member_id']
         madrasha_id = requested_data['madrasha']
-        membership_category = requested_data['category']
-        membership_sub_category = requested_data['sub_category']
+        member_type = requested_data['member_type']
         today = datetime.now()
-        activation_date = str("2022-05-01")
+        try:
+            member_instance = PermanentMembers.objects.get(id=member_id)
+            if member_instance:
+                if (member_type == MemrberType.MONTHLY.value):
+                    if member_instance.is_monthly_contribution:
+                        member_activation_date = member_instance.monthly_activation_date
+                        member_contribution_amount = member_instance.monthly_contribution
+                        is_member_active = member_instance.is_monthly_contribution
 
+                    else:
+                        return Response({"status": False, "member_id":member_id,'msg':"Member is not activated"})
+                        is_member_active = False
 
-        member_instance = PermanentMembers.objects.get(id=member_id)
-        if member_instance:
-            if member_instance.is_monthly_contribution:
-                monthly_contribution_activated = member_instance.monthly_activation_date
-                monthly_contribution_amount = member_instance.monthly_contribution
-                print("monthly_contribution_activated", monthly_contribution_activated)
-                print("monthly_contribution_amount", monthly_contribution_amount)
-            if member_instance.is_yearly_contribution:
-                yearly_contribution_activated = member_instance.yearly_activation_date
-                yearly_contribution_amount = member_instance.yearly_contribution
-                print("yearly_contribution_activate", yearly_contribution_activated)
-                print("yearly_contribution_amount", yearly_contribution_amount)
+                if (member_type == MemrberType.YEARLY.value):
+                    if member_instance.is_yearly_contribution:
+                        member_activation_date = member_instance.yearly_activation_date
+                        member_contribution_amount = member_instance.yearly_contribution
+                        is_member_active = member_instance.is_yearly_contribution
 
-#         membership_category = 5 #Sub_Category ID. Monthly Membership ID = 5, Yearly Membership ID = 6
-#         membership_sub_category = 5 #Sub_Category ID. Monthly Membership ID = 5, Yearly Membership ID = 6
+                    else:
+                        return Response({"status": False, "member_id":member_id,'member_type':member_type,'msg':"Member is not activated"})
 
-        date_1 = monthly_contribution_activated.strftime("%Y-%m-%d")
+            date_1 = member_activation_date.strftime("%Y-%m-%d")
+            date_2 = today.strftime("%Y-%m-%d")
+            start = datetime.strptime(date_1, "%Y-%m-%d")
+            end = datetime.strptime(date_2, "%Y-%m-%d")
+            if (member_type == MemrberType.MONTHLY.value):
+                difference=(end.year - start.year) * 12 + (end.month - start.month)
+            if (member_type == MemrberType.YEARLY.value):
+                difference = (end.year - start.year)
+            amount_to_pay = difference*member_contribution_amount
+            get_all_paid = OtherIncome.objects.values('member').annotate(name_count=Count('member'),amount=Sum('amount')).filter(madrasha=madrasha_id,member=member_id, member_type=member_type)
 
-        date_2 = today.strftime("%Y-%m-%d")
-        start = datetime.strptime(date_1, "%Y-%m-%d")
-        end = datetime.strptime(date_2, "%Y-%m-%d")
-        res = (end.year - start.year) * 12 + (end.month - start.month)
-        month_difference = res
-        print(month_difference)
-#         get_all_paid_fees = FessInfo.objects.values('paid_date','current_fee').annotate(name_count=Count('paid_date'),paid_amount=Sum('paid_amount')).filter(student=student_id, fees_type=fees_type)
-        get_all_paid = OtherIncome.objects.values('member').annotate(name_count=Count('member'),amount=Sum('amount')).filter(member=member_id, category=membership_category,sub_category=membership_sub_category)
-#         get_membership_info = OtherIncome.objects.filter(member=member_id, category=membership_category,sub_category=membership_sub_category)
-#         print(get_membership_info)
-        print(get_all_paid)
-        print(get_all_paid['amount'])
-        for obj in get_all_paid:
-#             get_all_paid_membership["amount"]
-            print(obj['member'])
-            print(obj['amount'])
-        madrasha = requested_data['madrasha']
-        member_id = requested_data['member_id']
-        return Response({"status": True, "member_id":member_id})
+            if get_all_paid:
+                total_paid_amount = get_all_paid[0]['amount']
+            else:
+                total_paid_amount = 0
+            if(amount_to_pay>=total_paid_amount):
+                total_due_amount = amount_to_pay-total_paid_amount
+                total_upfront_amount = 0
+            else:
+                total_due_amount = 0
+                total_upfront_amount = total_paid_amount-amount_to_pay
 
+            return Response({"status": True, "member_id":member_id,'amount_to_pay':amount_to_pay,'total_paid_amount':total_paid_amount,'total_due_amount':total_due_amount,'total_upfront_amount':total_upfront_amount,'member_activation_date':member_activation_date})
+
+        except PermanentMembers.DoesNotExist:
+            return Response({"status": False, "msg":"member id not found"},status=status.HTTP_400_BAD_REQUEST,)
 
 class AllExpenseView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView):
     queryset = AllExpense.objects.all()
