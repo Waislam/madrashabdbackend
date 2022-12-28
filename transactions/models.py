@@ -92,11 +92,11 @@ class StudentIncome(models.Model):
 
 
 class OtherIncome(models.Model):
-    madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='other_incomes', null=True)
-    category = models.ForeignKey(IncomeCategory, on_delete=models.PROTECT, related_name='categories_others', null=True)
-    sub_category = models.ForeignKey(IncomeSubCategory, on_delete=models.PROTECT, related_name='sub_categories_others', null=True)
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='other_incomes',blank=True, null=True)
+    category = models.ForeignKey(IncomeCategory, on_delete=models.PROTECT, related_name='categories_others', blank=True,null=True)
+    sub_category = models.ForeignKey(IncomeSubCategory, on_delete=models.PROTECT, related_name='sub_categories_others', blank=True, null=True)
     donar_name = models.CharField(max_length=200,null=True, blank=True)
-    member = models.ForeignKey(PermanentMembers, on_delete=models.PROTECT, related_name='member_id', null=True)
+    member = models.ForeignKey(PermanentMembers, on_delete=models.PROTECT, related_name='member_id',blank=True, null=True)
     member_type = models.CharField(max_length=100, null=True, blank=True)
     amount = models.IntegerField(max_length=15,null=True, blank=True)
     for_month = models.CharField(max_length=15, choices=MONTH_CHOICES, null=True, blank=True)

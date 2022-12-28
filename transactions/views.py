@@ -552,9 +552,16 @@ class OtherIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Upd
         obj_length = len(requested_data['other_details'])
         count = 0
         for obj in requested_data['other_details']:
-            category_instance = IncomeCategory.objects.get(id=obj['category'])
-            sub_category_instance = IncomeSubCategory.objects.get(id=obj['sub_category'])
-            member_instance = PermanentMembers.objects.get(id=obj['member'])
+            if obj['member_type'] not in [MemrberType.MONTHLY.value,MemrberType.YEARLY.value]:
+                category_instance = IncomeCategory.objects.get(id=obj['category'])
+                sub_category_instance = IncomeSubCategory.objects.get(id=obj['sub_category'])
+                member_instance=None
+            else:
+                member_instance = PermanentMembers.objects.get(id=obj['member'])
+                category_instance=None
+                sub_category_instance=None
+
+
             donar_name=obj['donar_name']
             member_type=obj['member_type']
             paid_date=obj['paid_date']
@@ -582,7 +589,7 @@ class OtherIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Upd
                 category=category_instance,
                 sub_category=sub_category_instance,
                 donar_name=donar_name,
-                member=member_instance,
+#                 member=member_instance,
                 member_type=member_type,
                 amount=amount,
                 paid_date=paid_date,
