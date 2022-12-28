@@ -281,8 +281,7 @@ class StudentIncomeCreateView(APIView):
         created_by = user.objects.get(id=requested_data['user_id'])
         student_inactance = Student.objects.get(id=requested_data['student'])
 
-        student_phone = student_inactance.guardian_contact
-        guardian_phone = student_inactance.guardian_contact
+        student_phone = student_inactance.user.phone
 
         madrasha = requested_data['madrasha']
         total_amount = requested_data['total_amount']
@@ -442,7 +441,7 @@ class StudentIncomeCreateView(APIView):
             if settings.SMS_ACTIVE:
                 print("last_receipt_number",last_receipt_number)
                 print("student_phone",student_phone)
-                msg = "You have Successfully paid "+str(paid_amount)+" TK. Money receipt number is " + str(last_receipt_number)
+                msg = "You have successfully paid "+str(total_amount)+" TK. Money receipt number is " + str(last_receipt_number)
                 if student_phone:
                     SendSMS(student_phone,msg)
 
