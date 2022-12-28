@@ -28,7 +28,7 @@ urlpatterns = [
 
     path('student-income/<int:pk>/', StudentIncomeDetailView.as_view()),
 
-    path('other-income/', OtherIncomeView.as_view()),
+    path('<madrasha_slug>/other-income/', OtherIncomeView.as_view()),
     path('other-income/<int:pk>/', OtherIncomeDetailView.as_view()),
      path('other-income/get-unpaid/', OtherIncomeGetUnpaidView.as_view()),
     path('expense/category/', ExpenseCategoryList.as_view()),

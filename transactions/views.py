@@ -504,7 +504,6 @@ class StudentIncomeDetailView(APIView):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-
 class OtherIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView):
     queryset = OtherIncome.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
@@ -653,7 +652,6 @@ class AllExpenseView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Upda
         """Method to create Income from student obj"""
         # self.serializer_class = StudentSerializer
         return self.create(request, *args, **kwargs)
-
 
 class AllExpenseDetailView(APIView):
     """this class is for CRUD"""
