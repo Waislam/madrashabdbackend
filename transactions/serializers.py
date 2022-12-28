@@ -93,6 +93,12 @@ class OtherIncomeListSerializer(serializers.ModelSerializer):
 
         depth = 3
 
+class OtherIncomeListSerializerV2 (serializers.ModelSerializer):
+
+    class Meta:
+        model = OtherIncome
+        fields = '__all__'
+        depth = 2
 
 class ExpenseCategorySerializer(serializers.ModelSerializer):
 

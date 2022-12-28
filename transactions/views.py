@@ -10,7 +10,7 @@ from settingapp.models import Fees
 from students.serializers import FessInfoSerializer
 from .serializers import (IncomeCategorySerializer, IncomeSubCategorySerializer, StudentIncomeSerializer,
                           OtherIncomeSerializer,
-                          OtherIncomeListSerializer, StudentIncomeListSerializer, AllExpenseListSerializer,
+                          OtherIncomeListSerializer, StudentIncomeListSerializer,OtherIncomeListSerializerV2, AllExpenseListSerializer,
                           AllExpenseSerializer, ExpenseCategorySerializer, ExpenseSubCategorySerializer)
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
@@ -32,6 +32,7 @@ from django.contrib.auth import get_user_model
 import requests
 from django.db.models import Count,Sum
 from django.forms.models import model_to_dict
+import json
 
 user = get_user_model()
 
@@ -588,18 +589,19 @@ class OtherIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Upd
 class OtherIncomeDetailView(APIView):
     """this class is for CRUD"""
 
-    def get_object(self, pk):
+    def get_object(self, receipt_number):
         """For getting single obj with slug field"""
         try:
-            return OtherIncome.objects.get(id=pk)
+            other_income_details = OtherIncome.objects.filter(receipt_number=receipt_number)
+            return other_income_details
         except OtherIncome.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, formate=None):
         """For getting single object details"""
         other_income = self.get_object(pk)
-        serializer = OtherIncomeListSerializer(other_income)
-        return Response({"status": True, "data": serializer.data})
+        serializer = OtherIncomeListSerializerV2(other_income, many=True).data
+        return Response({"status": True, "data": serializer})
 
     def put(self, request, pk, formate=None):
         """update single obj details"""
