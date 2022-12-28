@@ -161,7 +161,9 @@ if DEBUG:
 else:
     CSRF_TRUSTED_ORIGINS = ['http://178.128.94.215:1337', "http://178.128.94.215"]
 
+## SMS Settings
 
 SMS_API_ENDPOINT = "https://api.syssms.syssolution.com.bd/smsapiv3"
 SMS_API_KEY = "17002bc09f55fa102ed6586c82ea7b3e"
 SMS_SENDER = "8801552146318"
+SMS_ACTIVE = True

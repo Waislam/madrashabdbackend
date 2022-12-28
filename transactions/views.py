@@ -33,6 +33,8 @@ import requests
 from django.db.models import Count,Sum
 from django.forms.models import model_to_dict
 import json
+from django.conf import settings
+from settingapp.views import SendSMS
 
 user = get_user_model()
 
@@ -279,6 +281,9 @@ class StudentIncomeCreateView(APIView):
         created_by = user.objects.get(id=requested_data['user_id'])
         student_inactance = Student.objects.get(id=requested_data['student'])
 
+        student_phone = student_inactance.guardian_contact
+        guardian_phone = student_inactance.guardian_contact
+
         madrasha = requested_data['madrasha']
         total_amount = requested_data['total_amount']
         paid_date = requested_data['paid_date']
@@ -301,6 +306,7 @@ class StudentIncomeCreateView(APIView):
 
         # StudentIncome.objects.create(**student_income)
         student_income_id = StudentIncome.objects.all().last()
+        last_receipt_number = StudentIncome.objects.last().receipt_number
         fees = []
         for obj in requested_data['fees_detail']:
             date_format = "%Y-%m-%d"
@@ -401,8 +407,8 @@ class StudentIncomeCreateView(APIView):
                                 paid_amount=current_fee
                             )
                             paid_amount=paid_amount-current_fee
-                print("paid_amount3 ",paid_amount)
-                print("total_due_amount ",total_due_amount)
+#                 print("paid_amount3 ",paid_amount)
+#                 print("total_due_amount ",total_due_amount)
 #                 return Response(get_unpaid_data)
 
 
@@ -418,6 +424,8 @@ class StudentIncomeCreateView(APIView):
                     paid_date=paid_date,
                     paid_amount=paid_amount
                 )
+
+
             if (fees_type == FeesType.EXAMINATION.value):
                 if fees_type_term:
                     FessInfo.objects.create(
@@ -430,6 +438,13 @@ class StudentIncomeCreateView(APIView):
                         paid_date=paid_date,
                         paid_amount=paid_amount
                     )
+
+            if settings.SMS_ACTIVE:
+                print("last_receipt_number",last_receipt_number)
+                print("student_phone",student_phone)
+                msg = "You have Successfully paid "+str(paid_amount)+" TK. Money receipt number is " + str(last_receipt_number)
+                if student_phone:
+                    SendSMS(student_phone,msg)
 
         return Response({"status": True, "message": "Operation has been done successfully"})
 
