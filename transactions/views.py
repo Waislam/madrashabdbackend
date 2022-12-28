@@ -216,7 +216,7 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
         end = datetime.strptime(date_2, "%Y-%m-%d")
         res = (end.year - start.year) * 12 + (end.month - start.month)
         month_difference = res
-        print(student_inactance.monthly_tution_fee)
+#         print(student_inactance.monthly_tution_fee)
         get_all_paid_fees = FessInfo.objects.values('paid_date','current_fee').annotate(name_count=Count('paid_date'),paid_amount=Sum('paid_amount')).filter(student=student_id, fees_type=fees_type)
 #         print("fees list ", get_all_paid_fees)
 #         print("month_difference ", month_difference)
@@ -236,7 +236,7 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
         total_due = 0
         for fees in get_all_paid_fees:
             date = fees['paid_date'].strftime("%Y-%m")
-            print("Date ", date)
+#             print("Date ", date)
             paid_amount = fees['paid_amount']
             monthly_fee = fees['current_fee']
             due_amount = monthly_fee - paid_amount
@@ -256,11 +256,18 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
             data = {'date': str(due_date), 'due_amount': monthly_tution_fee,'monthly_fee': monthly_tution_fee}
             due_fees.append(data)
 #         print(months)
+        get_upfront_fees = FessInfo.objects.filter(student=student_id, fees_type=fees_type,paid_date__gte=today.strftime("%Y-%m-%d"))
+        upfront=[]
+        for obj in get_upfront_fees:
+            data = {'paid_date': obj.paid_date.strftime("%Y-%m-%d"), 'paid_amount': obj.paid_amount, 'fees_type': obj.fees_type,'fees_type_term':obj.fees_type_term}
+            upfront.append(data)
+        print(upfront)
         response = {
             "status": 200,
             "fees_type": fees_type,
             "total_amount": total_due,
-            "data": due_fees
+            "data": due_fees,
+            "upfront":upfront
         }
         return response
 
@@ -327,7 +334,7 @@ class StudentIncomeCreateView(APIView):
             print("paid_amount1 ",paid_amount)
             get_unpaid_data = GetStudentIncomeUnpaid(student, madrasha, fees_type)
             total_due_amount = get_unpaid_data["total_amount"]
-            print("get_unpaid_data",get_unpaid_data)
+#             print("get_unpaid_data",get_unpaid_data)
 #             if ((fees_type == FeesType.MONTHLY_TUITION.value) or (fees_type ==FeesType.BOARDING.value) or (fees_type ==FeesType.TRANSPORT.value)):
 
             if fees_type in [FeesType.MONTHLY_TUITION.value, FeesType.BOARDING.value, FeesType.TRANSPORT.value]:
@@ -451,12 +458,13 @@ class StudentIncomeCreateView(APIView):
 class StudentIncomeGetUnpaidView(APIView):
     def post(self, request, madrasha_slug, formate=None):
         print("method ", request)
+        today = datetime.now()
         requested_data = request.data
         student = requested_data["student"]
         madrasha = requested_data['madrasha']
         fees_type = requested_data['fees_type']
-
         get_unpaid_data = GetStudentIncomeUnpaid(student, madrasha, fees_type)
+
         return Response(get_unpaid_data)
 
 class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin,
@@ -566,6 +574,7 @@ class OtherIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Upd
             member_type=obj['member_type']
             paid_date=obj['paid_date']
             amount=obj['amount']
+            address=obj['address']
             receipt_book_number=obj['receipt_book_number']
             receipt_page_number=obj['receipt_page_number']
             if count == 0:
@@ -577,6 +586,7 @@ class OtherIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Upd
                     member=member_instance,
                     member_type=member_type,
                     amount=amount,
+                    address=address,
                     paid_date=paid_date,
                     receipt_book_number=receipt_book_number,
                     receipt_page_number=receipt_page_number,
@@ -592,6 +602,7 @@ class OtherIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Upd
                 member=member_instance,
                 member_type=member_type,
                 amount=amount,
+                address=address,
                 paid_date=paid_date,
                 receipt_book_number=receipt_book_number,
                 receipt_page_number=receipt_page_number,
