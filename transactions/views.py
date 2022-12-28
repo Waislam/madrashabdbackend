@@ -665,23 +665,23 @@ class OtherIncomeGetUnpaidView(APIView):
             member_instance = PermanentMembers.objects.get(id=member_id)
             if member_instance:
                 if (member_type == MemrberType.MONTHLY.value):
-                    if member_instance.is_monthly_contribution:
+                    if member_instance.is_monthly_contribution and member_instance.monthly_activation_date:
                         member_activation_date = member_instance.monthly_activation_date
                         member_contribution_amount = member_instance.monthly_contribution
                         is_member_active = member_instance.is_monthly_contribution
 
                     else:
-                        return Response({"status": False, "member_id":member_id,'msg':"Member is not activated"})
+                        return Response({"status": False, "member_id":member_id,'msg':"Member is not activated properly"})
                         is_member_active = False
 
                 if (member_type == MemrberType.YEARLY.value):
-                    if member_instance.is_yearly_contribution:
+                    if member_instance.is_yearly_contribution and member_instance.yearly_activation_date:
                         member_activation_date = member_instance.yearly_activation_date
                         member_contribution_amount = member_instance.yearly_contribution
                         is_member_active = member_instance.is_yearly_contribution
 
                     else:
-                        return Response({"status": False, "member_id":member_id,'member_type':member_type,'msg':"Member is not activated"})
+                        return Response({"status": False, "member_id":member_id,'member_type':member_type,'msg':"Member is not activated properly"})
 
             date_1 = member_activation_date.strftime("%Y-%m-%d")
             date_2 = today.strftime("%Y-%m-%d")
