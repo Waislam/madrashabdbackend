@@ -44,7 +44,7 @@ class OtherIncomeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OtherIncome
-        fields = ['id', 'madrasha', 'category', 'sub_category', 'donar_name','member','member_type', 'amount', 'for_month', 'for_months',
+        fields = ['id', 'madrasha', 'category', 'sub_category', 'donar_name','member','member_type', 'amount',
                   'paid_date', 'receipt_book_number', 'receipt_page_number', 'receipt_number', 'voucher_name']
 
     def create(self, validated_data):
@@ -70,8 +70,8 @@ class OtherIncomeSerializer(serializers.ModelSerializer):
         instance.amount = validated_data.get('amount', instance.amount)
         instance.member = validated_data.get('member', instance.member)
         instance.member_type = validated_data.get('member_type', instance.member_type)
-        instance.for_month = validated_data.get('for_month', instance.for_month)
-        instance.for_months = validated_data.get('for_months', instance.for_months)
+#         instance.for_month = validated_data.get('for_month', instance.for_month)
+#         instance.for_months = validated_data.get('for_months', instance.for_months)
         instance.receipt_book_number = validated_data.get('receipt_book_number', instance.receipt_book_number)
         instance.receipt_page_number = validated_data.get('receipt_page_number', instance.receipt_page_number)
         instance.category = validated_data.get('category', category)
@@ -88,7 +88,7 @@ class OtherIncomeListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OtherIncome
-        fields = ['id', 'madrasha', 'category', 'sub_category', 'donar_name', 'amount','member','member_type', 'for_month', 'for_months',
+        fields = ['id', 'madrasha', 'category', 'sub_category', 'donar_name', 'amount','member','member_type',
                   'paid_date', 'receipt_book_number', 'receipt_page_number', 'receipt_number', 'voucher_name']
 
         depth = 3

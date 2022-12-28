@@ -589,7 +589,7 @@ class OtherIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Upd
                 category=category_instance,
                 sub_category=sub_category_instance,
                 donar_name=donar_name,
-#                 member=member_instance,
+                member=member_instance,
                 member_type=member_type,
                 amount=amount,
                 paid_date=paid_date,
