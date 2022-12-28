@@ -530,7 +530,59 @@ class OtherIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Upd
     def post(self, request, *args, **kwargs):
         """Method to create Income from student obj"""
         # self.serializer_class = StudentSerializer
-        return self.create(request, *args, **kwargs)
+        requested_data = request.data
+        madrasha_instance = Madrasha.objects.get(id=requested_data['madrasha'])
+        created_by = user.objects.get(id=requested_data['user_id'])
+
+        obj_length = len(requested_data['other_details'])
+        count = 0
+        for obj in requested_data['other_details']:
+            category_instance = IncomeCategory.objects.get(id=obj['category'])
+            sub_category_instance = IncomeSubCategory.objects.get(id=obj['sub_category'])
+            member_instance = PermanentMembers.objects.get(id=obj['member'])
+            donar_name=obj['donar_name']
+            member_type=obj['member_type']
+            paid_date=obj['paid_date']
+            amount=obj['amount']
+            receipt_book_number=obj['receipt_book_number']
+            receipt_page_number=obj['receipt_page_number']
+            if count == 0:
+                OtherIncome.objects.create(
+                    madrasha=madrasha_instance,
+                    category=category_instance,
+                    sub_category=sub_category_instance,
+                    donar_name=donar_name,
+                    member=member_instance,
+                    member_type=member_type,
+                    amount=amount,
+                    paid_date=paid_date,
+                    receipt_book_number=receipt_book_number,
+                    receipt_page_number=receipt_page_number,
+                    created_by = created_by
+                )
+            else:
+                last_receipt_number = OtherIncome.objects.last().receipt_number
+                OtherIncome.objects.create(
+                madrasha=madrasha_instance,
+                category=category_instance,
+                sub_category=sub_category_instance,
+                donar_name=donar_name,
+                member=member_instance,
+                member_type=member_type,
+                amount=amount,
+                paid_date=paid_date,
+                receipt_book_number=receipt_book_number,
+                receipt_page_number=receipt_page_number,
+                receipt_number = last_receipt_number,
+                created_by = created_by
+            )
+            count+=1
+        return Response(
+            {
+                "status": True,
+                "message": "Other Income has been Insert successfully",
+            }
+        )
 
 
 class OtherIncomeDetailView(APIView):

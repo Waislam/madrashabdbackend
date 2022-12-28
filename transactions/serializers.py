@@ -49,6 +49,7 @@ class OtherIncomeSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # create Other Income obj
+        print("validated_data", validated_data)
         other_income = OtherIncome.objects.create(**validated_data)
         return other_income
 
