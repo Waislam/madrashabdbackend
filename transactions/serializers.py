@@ -119,7 +119,7 @@ class AllExpenseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AllExpense
-        fields = ['id', 'madrasha', 'category', 'sub_category', 'expense_by', 'date', 'for_month', 'for_months',
+        fields = ['id', 'madrasha', 'category', 'sub_category', 'expense_by', 'date',
                   'receipt_number', 'description', 'approved_by', 'amount', 'voucher_name']
 
     def create(self, validated_data):
@@ -141,8 +141,8 @@ class AllExpenseSerializer(serializers.ModelSerializer):
 
         # get instance fields
         instance.expense_by = validated_data.get('expense_by', instance.expense_by)
-        instance.for_month = validated_data.get('for_month', instance.for_month)
-        instance.for_months = validated_data.get('for_months', instance.for_months)
+#         instance.for_month = validated_data.get('for_month', instance.for_month)
+#         instance.for_months = validated_data.get('for_months', instance.for_months)
         instance.receipt_number = validated_data.get('receipt_number', instance.receipt_number)
         instance.description = validated_data.get('description', instance.description)
         instance.approved_by = validated_data.get('approved_by', instance.approved_by)
@@ -161,5 +161,5 @@ class AllExpenseListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AllExpense
-        fields = ['id', 'madrasha', 'category', 'sub_category', 'expense_by', 'date', 'for_month', 'for_months',
+        fields = ['id', 'madrasha', 'category', 'sub_category', 'expense_by', 'date',
                   'receipt_number', 'description', 'approved_by', 'amount', 'voucher_name']

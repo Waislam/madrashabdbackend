@@ -746,7 +746,11 @@ def SendSMS(numbers, msg):
     headers = {'content-type': 'application/json'}
     url = apiEndpoint
     params = {'apikey': apiKey, 'sender': apiSender,'msisdn': numbers,'smstext':msg}
-    response = requests.post(url, params=params, headers=headers)
+
+    if settings.SMS_ACTIVE:
+        response = requests.post(url, params=params, headers=headers)
+    else:
+        response= {'status':False,'message': "SMS Settings is not activate", }
     return response
 
 class SmsSendView(APIView):

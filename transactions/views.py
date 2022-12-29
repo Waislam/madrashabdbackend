@@ -127,7 +127,7 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
     student_inactance = Student.objects.get(id=student)
     student_id = Student.objects.get(id=student).id
 
-    monthly_tution_fee = student_inactance.monthly_tution_fee
+
     academic_fee = student_inactance.academic_fees
     boarding_fee = student_inactance.boarding_feee
     admission_fee = student_inactance.admission_fee
@@ -196,15 +196,18 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
         if (fees_type == FeesType.MONTHLY_TUITION.value):
             if is_tution_fee_active:
                 date_1 = tution_fee_active_from
+                monthly_fees = student_inactance.monthly_tution_fee
             else:
                 return ({"status": 204, "fees_type": fees_type, "msg": "Tution Fee is not activated"})
         elif (fees_type == FeesType.BOARDING.value):
             if is_boarding_fee_active:
+                monthly_fees = student_inactance.boarding_feee
                 date_1 = boarding_fee_active_from
             else:
                 return ({"status": 204, "fees_type": fees_type, "msg": "Boarding Fee is not activated"})
         elif (fees_type == FeesType.TRANSPORT.value):
             if is_transport_fee_active:
+                monthly_fees = student_inactance.transport_fee
                 date_1 = transport_fee_active_from
             else:
                 return ({"status": 204, "fees_type": fees_type, "msg": "Transport Fee is not activated"})
@@ -216,7 +219,7 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
         end = datetime.strptime(date_2, "%Y-%m-%d")
         res = (end.year - start.year) * 12 + (end.month - start.month)
         month_difference = res
-#         print(student_inactance.monthly_tution_fee)
+#         print(student_inactance.monthly_fees)
         get_all_paid_fees = FessInfo.objects.values('paid_date','current_fee').annotate(name_count=Count('paid_date'),paid_amount=Sum('paid_amount')).filter(student=student_id, fees_type=fees_type)
 #         print("fees list ", get_all_paid_fees)
 #         print("month_difference ", month_difference)
@@ -239,6 +242,7 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
 #             print("Date ", date)
             paid_amount = fees['paid_amount']
             monthly_fee = fees['current_fee']
+            print("monthly_fee == ", monthly_fee)
             due_amount = monthly_fee - paid_amount
             if (date in months):
 #                 print("dus month ", date)
@@ -252,8 +256,8 @@ def GetStudentIncomeUnpaid(student, madrasha, fees_type):
                 due_fees.append(data)
         print("months2 ", months)
         for due_date in months:
-            total_due += int(monthly_tution_fee)
-            data = {'date': str(due_date), 'due_amount': monthly_tution_fee,'monthly_fee': monthly_tution_fee}
+            total_due += int(monthly_fees)
+            data = {'date': str(due_date), 'due_amount': monthly_fees,'monthly_fee': monthly_fees}
             due_fees.append(data)
 #         print(months)
         get_upfront_fees = FessInfo.objects.filter(student=student_id, fees_type=fees_type,paid_date__gte=today.strftime("%Y-%m-%d"))
@@ -329,6 +333,7 @@ class StudentIncomeCreateView(APIView):
 
             fees_type = obj['fees_type']
             paid_amount =  obj["paid_amount"]
+            paid_amount_v2 =  obj["paid_amount"]
             current_fee=obj["current_fee"]
             fees_type_term=obj["fees_type_term"]
             print("paid_amount1 ",paid_amount)
@@ -336,11 +341,14 @@ class StudentIncomeCreateView(APIView):
             total_due_amount = get_unpaid_data["total_amount"]
 #             print("get_unpaid_data",get_unpaid_data)
 #             if ((fees_type == FeesType.MONTHLY_TUITION.value) or (fees_type ==FeesType.BOARDING.value) or (fees_type ==FeesType.TRANSPORT.value)):
-
+            monthly_paid_count = 0
+            admission_paid_count = 0
+            exam_paid_count = 0
             if fees_type in [FeesType.MONTHLY_TUITION.value, FeesType.BOARDING.value, FeesType.TRANSPORT.value]:
 #                 if(paid_amount>total_due_amount):
 #                     temp_due_amount = paid_amount - total_due_amount
 #                     print("temp_due_amount", temp_due_amount)
+
                 if (total_due_amount > 0 ):
                     for payment in get_unpaid_data["data"]:
                         payment_date = payment['date']
@@ -375,8 +383,9 @@ class StudentIncomeCreateView(APIView):
                             total_due_amount = total_due_amount - payment_due
                             paid_amount=0
                             break
+                    monthly_paid_count +=1
                 print("paid_amount2 ",paid_amount)
-                if (total_due_amount == 0 ):
+                if (total_due_amount == 0 and from_date !=""):
                     print("paid_amount33 === ",paid_amount)
                     print("total_due_amount 33 ",total_due_amount)
                     if month_value == 1:
@@ -413,6 +422,7 @@ class StudentIncomeCreateView(APIView):
                                 paid_amount=current_fee
                             )
                             paid_amount=paid_amount-current_fee
+                    monthly_paid_count +=1
 #                 print("paid_amount3 ",paid_amount)
 #                 print("total_due_amount ",total_due_amount)
 #                 return Response(get_unpaid_data)
@@ -430,8 +440,7 @@ class StudentIncomeCreateView(APIView):
                     paid_date=paid_date,
                     paid_amount=paid_amount
                 )
-
-
+                admission_paid_count +=1
             if (fees_type == FeesType.EXAMINATION.value):
                 if fees_type_term:
                     FessInfo.objects.create(
@@ -444,10 +453,9 @@ class StudentIncomeCreateView(APIView):
                         paid_date=paid_date,
                         paid_amount=paid_amount
                     )
+                    exam_paid_count +=1
 
-            if settings.SMS_ACTIVE:
-                print("last_receipt_number",last_receipt_number)
-                print("student_phone",student_phone)
+            if monthly_paid_count>0 or admission_paid_count> 0 or exam_paid_count>0:
                 msg = "You have successfully paid "+str(total_amount)+" TK. Money receipt number is " + str(last_receipt_number)
                 if student_phone:
                     SendSMS(student_phone,msg)
@@ -665,23 +673,23 @@ class OtherIncomeGetUnpaidView(APIView):
             member_instance = PermanentMembers.objects.get(id=member_id)
             if member_instance:
                 if (member_type == MemrberType.MONTHLY.value):
-                    if member_instance.is_monthly_contribution:
+                    if member_instance.is_monthly_contribution and member_instance.monthly_activation_date:
                         member_activation_date = member_instance.monthly_activation_date
                         member_contribution_amount = member_instance.monthly_contribution
                         is_member_active = member_instance.is_monthly_contribution
 
                     else:
-                        return Response({"status": False, "member_id":member_id,'msg':"Member is not activated"})
+                        return Response({"status": False, "member_id":member_id,'msg':"Member is not activated properly"})
                         is_member_active = False
 
                 if (member_type == MemrberType.YEARLY.value):
-                    if member_instance.is_yearly_contribution:
+                    if member_instance.is_yearly_contribution and member_instance.yearly_activation_date:
                         member_activation_date = member_instance.yearly_activation_date
                         member_contribution_amount = member_instance.yearly_contribution
                         is_member_active = member_instance.is_yearly_contribution
 
                     else:
-                        return Response({"status": False, "member_id":member_id,'member_type':member_type,'msg':"Member is not activated"})
+                        return Response({"status": False, "member_id":member_id,'member_type':member_type,'msg':"Member is not activated properly"})
 
             date_1 = member_activation_date.strftime("%Y-%m-%d")
             date_2 = today.strftime("%Y-%m-%d")
