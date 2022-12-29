@@ -97,17 +97,18 @@ class OurUserManager(BaseUserManager):
     #     user.save(using=self._db)
     #     return user
 
-    def create_user(self, phone, password=None):
+    def create_user(self, phone, password=None, **extra_fields):
         """
         Creates and saves a User with the given email, date of
         birth and password.
         """
         if not phone:
-            raise ValueError('Users must have an phone number')
+            raise ValueError('Users must have a phone number')
 
         user = self.model(
             phone=phone,
-            username=phone
+            # username=phone
+            **extra_fields
         )
 
         user.set_password(password)
