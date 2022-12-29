@@ -98,7 +98,7 @@ class OtherIncome(models.Model):
     donar_name = models.CharField(max_length=200,null=True, blank=True)
     member = models.ForeignKey(PermanentMembers, on_delete=models.PROTECT, related_name='member_id',blank=True, null=True)
     member_type = models.CharField(max_length=100, null=True, blank=True)
-    amount = models.IntegerField(max_length=15,null=True, blank=True)
+    amount = models.IntegerField(null=True, blank=True)
 #     for_month = models.CharField(max_length=15, choices=MONTH_CHOICES, null=True, blank=True)
 #     for_months = models.CharField(max_length=100, null=True, blank=True)
     paid_date = models.DateField(default=date.today,null=True, blank=True)

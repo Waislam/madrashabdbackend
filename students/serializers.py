@@ -124,7 +124,9 @@ class StudentSerializer(serializers.ModelSerializer):
         mother_info_obj = Parent.objects.create(**mother_info)
 
         # create custom user
-        user_obj = CustomUser.objects.create(**user_field)
+        phone = user_field.pop('phone')
+
+        user_obj = CustomUser.objects.create_user(phone=phone, **user_field)
 
         student = Student.objects.create(
             user=user_obj,
