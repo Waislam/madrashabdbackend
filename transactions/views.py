@@ -498,6 +498,8 @@ class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.U
     def get(self, request, *args, **kwargs):
         """method to show the list of Income from Student"""
         # self.serializer_class = StudentListSerializer
+        print("first")
+        print(self.list)
         return self.list(request, *args, **kwargs)
 
 class StudentIncomeDetailView(APIView):
