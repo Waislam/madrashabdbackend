@@ -120,17 +120,17 @@ class OldStudentUpdateView(APIView):
 class StudentDetailBySlugView(APIView):
     """this class is for CRUD"""
 
-    def get_object(self, student_id):
+    def get_object(self, student_id, madrasha_slug):
         """For getting single obj with slug field"""
         try:
-            return Student.objects.get(student_id=student_id)
+            return Student.objects.get(student_id=student_id, madrasha__slug=madrasha_slug)
         except Student.DoesNotExist:
             raise Http404
 
-    def get(self, request, student_id, formate=None):
+    def get(self, request, student_id, madrasha_slug, formate=None):
         """For getting single student details"""
         try:
-            student = self.get_object(student_id)
+            student = self.get_object(student_id, madrasha_slug)
             serializer = StudentListSerializer(student)
             return Response({"status": True, "data": serializer.data})
         except:
