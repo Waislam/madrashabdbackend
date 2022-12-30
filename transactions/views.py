@@ -481,7 +481,7 @@ class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.U
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = StudentIncomeFilter
     search_fields = ["student", ""]
-    pagination_class = CustomPagination
+    # pagination_class = CustomPagination
 
     def get_queryset(self):
         """to get any parameter from api"""
@@ -498,8 +498,6 @@ class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.U
     def get(self, request, *args, **kwargs):
         """method to show the list of Income from Student"""
         # self.serializer_class = StudentListSerializer
-        print("first")
-        print(self.list)
         return self.list(request, *args, **kwargs)
 
 class StudentIncomeDetailView(APIView):
