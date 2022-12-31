@@ -19,6 +19,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 DEBUG = True
+SECRET_KEY='django-insecure-wg(wplo(x!$a(l$rzw5k!tr4v#k9zxy5=o_7*9@a(_q4f&3s&8'
+ALLOWED_HOSTS=[
+    'localhost',
+    '127.0.0.1',
+    '178.128.94.215',
+    'ec2-15-206-185-206.ap-south-1.compute.amazonaws.com'
+]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'madrasha_db',
+        'USER': 'madrasha',
+        'PASSWORD': 'madrasha',
+        'HOST': 'db',
+        'PORT': '5432',
+    }
+}
 
 # Application definition
 
