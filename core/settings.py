@@ -19,6 +19,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 DEBUG = True
+SECRET_KEY='django-insecure-wg(wplo(x!$a(l$rzw5k!tr4v#k9zxy5=o_7*9@a(_q4f&3s&8'
+ALLOWED_HOSTS=[
+    'localhost',
+    '127.0.0.1',
+    '178.128.94.215',
+    'ec2-15-206-185-206.ap-south-1.compute.amazonaws.com'
+]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'madrasha_db',
+        'USER': 'madrasha',
+        'PASSWORD': 'madrasha',
+        'HOST': 'db',
+        'PORT': '5432',
+    }
+}
 
 # Application definition
 
@@ -129,10 +147,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
-if DEBUG:
-    STATICFILES_DIRS = (os.path.join(BASE_DIR / 'static'),)
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR / 'static')
+# if DEBUG:
+#     STATICFILES_DIRS = (os.path.join(BASE_DIR / 'static'),)
+# else:
+#     STATIC_ROOT = os.path.join(BASE_DIR / 'static')
+
+STATIC_ROOT = os.path.join(BASE_DIR / 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -157,9 +177,9 @@ REST_FRAMEWORK = {
 }
 
 if DEBUG:
-    CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8087', 'http://178.128.94.215:1337', 'http://178.128.94.215']
+    CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8087', 'http://178.128.94.215:1337', 'http://178.128.94.215', "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337"]
 else:
-    CSRF_TRUSTED_ORIGINS = ['http://178.128.94.215:1337', "http://178.128.94.215"]
+    CSRF_TRUSTED_ORIGINS = ['http://178.128.94.215:1337', "http://178.128.94.215", "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337" ]
 
 ## SMS Settings
 

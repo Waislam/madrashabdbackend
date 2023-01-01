@@ -1,9 +1,3 @@
 [
-{
-    "model": "teachers.skill",
-    "pk": 1,
-    "fields": {
-        "skill_name": "New skill"
-    }
-}
+
 ]
