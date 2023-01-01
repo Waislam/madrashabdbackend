@@ -11,6 +11,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from PIL import Image
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import PermissionsMixin
+from datetime import datetime
+
 
 # Create your models here.
 
@@ -61,13 +63,15 @@ class Address(models.Model):
     division = models.ForeignKey(Division, on_delete=models.SET_NULL, blank=True, null=True, related_name='divisions')
     district = models.ForeignKey(District, on_delete=models.SET_NULL, blank=True, null=True, related_name='districts')
     thana = models.ForeignKey(Thana, on_delete=models.SET_NULL, blank=True, null=True, related_name='thanas')
-    post_office = models.ForeignKey(PostOffice, on_delete=models.SET_NULL, blank=True, null=True, related_name='post_offices')
+    post_office = models.ForeignKey(PostOffice, on_delete=models.SET_NULL, blank=True, null=True,
+                                    related_name='post_offices')
     post_code = models.ForeignKey(PostCode, on_delete=models.SET_NULL, blank=True, null=True, related_name='post_cods')
     address_info = models.TextField()
 
     # def __str__(self):
     # #commented when got error of name valu during viewing individual student profile in admin
     #     return self.division.name
+
 
 # ============================== 2. Role Model ==========================
 
@@ -78,6 +82,7 @@ class Role(models.Model):
 
     def __str__(self):
         return self.role_name
+
 
 # =========================== 3. Custom Manager ===================
 
@@ -171,6 +176,7 @@ class CustomUser(PermissionsMixin, AbstractBaseUser):
         # Simplest possible answer: Yes, always
         return True
 
+
 # ============================= 4. Madrasha object =================
 
 
@@ -193,17 +199,42 @@ class Madrasha(models.Model):
     slug = models.SlugField(unique=True, blank=True)
 
     def generate_madrasha_code(self):
-        starting = 100
+        currentYear = str(datetime.today().year)
+        starting = '01'
+        # print('print', currentYear + starting)
         try:
             last_madrasha = Madrasha.objects.latest('madrasha_code')
+
             if last_madrasha:
-                last_madrasha_code = int(last_madrasha.madrasha_code)
+                last_madrasha_code = last_madrasha.madrasha_code
+                split_code = last_madrasha_code[4:]
+                last_madrasha_code = int(split_code)
             else:
-                last_madrasha_code = starting
-            generated_code = str(last_madrasha_code+1)
-            return generated_code
+                last_madrasha_code = int(starting)
+            if last_madrasha_code < 10:
+                add_zero = "0" + str(last_madrasha_code + 1)
+                generated_code = add_zero
+            else:
+                add_just_one = str(last_madrasha_code + 1)
+                generated_code = add_just_one
+
+            return (currentYear + generated_code)
         except:
-            return starting
+            return (currentYear + starting)
+
+    # def generate_madrasha_code(self):
+    #     currentYear = str(datetime.today().year)
+    #     starting = currentYear + '01'
+    #     try:
+    #         last_madrasha = Madrasha.objects.latest('madrasha_code')
+    #         if last_madrasha:
+    #             last_madrasha_code = int(last_madrasha.madrasha_code)
+    #         else:
+    #             last_madrasha_code = starting
+    #         generated_code = str(last_madrasha_code+1)
+    #         return generated_code
+    #     except:
+    #         return starting
 
     def resize_logo_image(self):
         if self.madrasha_logo:
@@ -224,8 +255,8 @@ class Madrasha(models.Model):
     def __str__(self):
         return self.name
 
-    class Meta:
-        ordering = ['-madrasha_code']
+    # class Meta:
+    #     ordering = ['-madrasha_code']
 
 
 # ====================== 5. Madrasha user List ================================
