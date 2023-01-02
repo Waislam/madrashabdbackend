@@ -177,9 +177,19 @@ REST_FRAMEWORK = {
 }
 
 if DEBUG:
-    CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8087', 'http://178.128.94.215:1337', 'http://178.128.94.215', "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337"]
+    CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8087',
+                            'http://178.128.94.215:1337',
+                            'http://178.128.94.215',
+                            "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337",
+                            "https://dev.ikhwanbd.com"
+                            ]
 else:
-    CSRF_TRUSTED_ORIGINS = ['http://178.128.94.215:1337', "http://178.128.94.215", "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337" ]
+    CSRF_TRUSTED_ORIGINS = [
+        'http://178.128.94.215:1337',
+        "http://178.128.94.215",
+        "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337",
+        "https://dev.ikhwanbd.com"
+    ]
 
 ## SMS Settings
 
