@@ -24,7 +24,9 @@ ALLOWED_HOSTS=[
     'localhost',
     '127.0.0.1',
     '178.128.94.215',
-    'ec2-15-206-185-206.ap-south-1.compute.amazonaws.com'
+    'ec2-15-206-185-206.ap-south-1.compute.amazonaws.com',
+    'dev.ikhwanbd.com',
+    'devadmin.ikhwanbd.com'
 ]
 
 DATABASES = {
@@ -181,14 +183,16 @@ if DEBUG:
                             'http://178.128.94.215:1337',
                             'http://178.128.94.215',
                             "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337",
-                            "https://dev.ikhwanbd.com"
+                            "https://dev.ikhwanbd.com",
+                            "http://devadmin.ikhwanbd.com"
                             ]
 else:
     CSRF_TRUSTED_ORIGINS = [
         'http://178.128.94.215:1337',
         "http://178.128.94.215",
         "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337",
-        "https://dev.ikhwanbd.com"
+        "https://dev.ikhwanbd.com",
+        "http://devadmin.ikhwanbd.com"
     ]
 
 ## SMS Settings
