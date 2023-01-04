@@ -201,7 +201,7 @@ CSRF_TRUSTED_ORIGINS = [
         "http://178.128.94.215",
         "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337",
         "https://dev.ikhwanbd.com",
-        "http://devadmin.ikhwanbd.com:1337"
+        "https://devadmin.ikhwanbd.com"
     ]
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
