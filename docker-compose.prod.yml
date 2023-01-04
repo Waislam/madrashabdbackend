@@ -67,7 +67,7 @@ services:
     command: echo "Skipping..."
     container_name: certbot
     env_file:
-      - ./nginx/.env.prod
+      - ./nginx/prod/.env.prod
     volumes:
       - certbot_www_volume:/vol/www/
       - certbot_certs_volume:/etc/letsencrypt/
