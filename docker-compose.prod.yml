@@ -27,7 +27,7 @@ services:
     networks:
       - madrashaNet
   nginx:
-    build: ./nginx/DockerfileProd
+    build: ./nginx/prod
     container_name: nginx
     env_file:
       - ./nginx/.env.prod
