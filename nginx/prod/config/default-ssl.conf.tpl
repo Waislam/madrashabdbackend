@@ -73,6 +73,7 @@ server {
     add_header Access-Control-Allow-Origin *;
     add_header Access-Control-Allow-Credentials true;
     add_header Access-Control-Allow-Methods *;
+    add_header Access-Control-Allow-Headers *;
 
 
     # static files directory
