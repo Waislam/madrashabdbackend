@@ -1,3 +1,7 @@
+upstream core {
+    server web:8000;
+}
+
 server {
     listen 80;
 
@@ -15,6 +19,6 @@ server {
 
     location / {        
         proxy_redirect     off;
-        proxy_pass   http://web:8000;
+        proxy_pass   http://core;
     }
 }

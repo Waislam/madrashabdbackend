@@ -1,3 +1,6 @@
+upstream core {
+    server web:8000;
+}
 
 server {
     listen 80;
@@ -94,7 +97,7 @@ server {
         proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
         proxy_set_header    X-Forwarded-Proto   https;
         proxy_set_header    User-Agent          $http_user_agent;
-        proxy_pass   http://web:8000;
+        proxy_pass   http://core;
     }
 }
 
