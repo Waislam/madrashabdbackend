@@ -20,5 +20,7 @@ server {
     location / {        
         proxy_redirect     off;
         proxy_pass   http://core;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
     }
 }
