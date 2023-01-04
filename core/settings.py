@@ -204,6 +204,9 @@ CSRF_TRUSTED_ORIGINS = [
         "http://devadmin.ikhwanbd.com:1337"
     ]
 
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+
 ## SMS Settings
 
 SMS_API_ENDPOINT = "https://api.syssms.syssolution.com.bd/smsapiv3"

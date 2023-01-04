@@ -1,5 +1,4 @@
 *.py[cod]
-.*
 !.dockerignore
 !.github
 !.gitignore
@@ -22,7 +21,6 @@ dist/
 /static/
 
 # Environments
-.env
 .venv
 env/
 venv/
