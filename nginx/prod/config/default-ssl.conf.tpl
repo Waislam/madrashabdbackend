@@ -70,6 +70,9 @@ server {
     add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
     add_header Set-Cookie "Path=/; HttpOnly; Secure;  SameSite=strict;";
     add_header Cache-Control "private, no-cache, no-store, must-revalidate, max-age=0" always;
+    add_header Access-Control-Allow-Origin *;
+    add_header Access-Control-Allow-Credentials true;
+    add_header Access-Control-Allow-Methods *;
 
 
     # static files directory
