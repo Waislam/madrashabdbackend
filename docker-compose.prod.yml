@@ -73,6 +73,8 @@ services:
       - certbot_certs_volume:/etc/letsencrypt/
     depends_on:
       - nginx
+    networks:
+      - madrashaNet
 volumes:
   postgres_data:
   static_volume:
