@@ -30,7 +30,7 @@ services:
     build: ./nginx/prod
     container_name: nginx
     env_file:
-      - ./nginx/.env.prod
+      - ./nginx/prod/.env.prod
     volumes:
       - static_volume:/home/app/web/static
       - media_volume:/home/app/web/media
