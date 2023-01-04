@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.prod
+    container_name: web
     command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/app/web/static
@@ -26,14 +27,16 @@ services:
     networks:
       - madrashaNet
   nginx:
-    build: ./nginx
+    build: ./nginx/DockerfileProd
+    container_name: nginx
+    env_file:
+      - ./nginx/.env.prod
     volumes:
       - static_volume:/home/app/web/static
       - media_volume:/home/app/web/media
-      - certs:/etc/nginx/certs
-      - html:/usr/share/nginx/html
-      - vhost:/etc/nginx/vhost.d
-      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certbot_www_volume:/vol/www/
+      - proxy_dhparams:/vol/proxy
+      - certbot_certs_volume:/etc/letsencrypt/
     ports:
       - '80:80'
       - '443:443'
@@ -58,16 +61,16 @@ services:
       - madrashaNet
     restart: unless-stopped
 
-  nginx-proxy-letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
+  certbot:
+    build:
+      context: ./certbot/
+    command: echo "Skipping..."
+    container_name: certbot
     env_file:
-      - ./.env.prod.proxy-companion
+      - ./nginx/.env.prod
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - certs:/etc/nginx/certs
-      - html:/usr/share/nginx/html
-      - vhost:/etc/nginx/vhost.d
-      - acme:/etc/acme.sh
+      - certbot_www_volume:/vol/www/
+      - certbot_certs_volume:/etc/letsencrypt/
     depends_on:
       - nginx
 volumes:
@@ -75,10 +78,9 @@ volumes:
   static_volume:
   media_volume:
   pgadmin:
-  certs:
-  html:
-  vhost:
-  acme:
+  certbot_www_volume:
+  certbot_certs_volume:
+  proxy_dhparams:
 
 networks:
   madrashaNet:
