@@ -67,7 +67,7 @@ services:
       - html:/usr/share/nginx/html
       - acme:/etc/acme.sh
     depends_on:
-      - nginx-proxy
+      - nginx
 volumes:
   postgres_data:
   static_volume:
