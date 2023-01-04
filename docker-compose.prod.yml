@@ -32,6 +32,7 @@ services:
       - media_volume:/home/app/web/media
       - certs:/etc/nginx/certs
       - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
       - /var/run/docker.sock:/tmp/docker.sock:ro
     ports:
       - '80:80'
@@ -65,6 +66,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - certs:/etc/nginx/certs
       - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
       - acme:/etc/acme.sh
     depends_on:
       - nginx
@@ -75,6 +77,7 @@ volumes:
   pgadmin:
   certs:
   html:
+  vhost:
   acme:
 
 networks:
