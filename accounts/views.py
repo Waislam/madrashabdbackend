@@ -51,9 +51,9 @@ User = get_user_model()
 
 #  ====================================== 1.dependent drop down for address ==========================
 
-# class DivisionListView(ListAPIView):
-#     queryset = Division.objects.all()
-#     serializer_class = DivisionSerializer
+class DivisionListView(ListAPIView):
+    queryset = Division.objects.all()
+    serializer_class = DivisionSerializer
 
 
 class DistrictListView(generics.ListAPIView):

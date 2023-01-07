@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (
-    # DivisionListView,
+    DivisionListView,
     DistrictListView,
     # ThanaListView,
     # PostOfficeListView,
@@ -22,7 +22,7 @@ urlpatterns = [
     path('user-detail/<int:pk>/', UserDetail.as_view()),
 
     # Address path
-    # path('division/', DivisionListView.as_view()),
+    path('division/', DivisionListView.as_view()),
     path('district/', DistrictList.as_view()),  # for backend dependable newly added on 7
     # path('district/', DistrictListView.as_view()),
     path('district/<division>/', DistrictListView.as_view()),
