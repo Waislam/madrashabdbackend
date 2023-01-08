@@ -11,7 +11,7 @@ class LocationAdmin(admin.ModelAdmin):
     list_display = ('division', 'district', 'thana', 'post_office', 'post_code')
 
     class Media:
-        js = ("./js/dependable_dropdown_address_ajax.js",)
+        js = ("js/dependable_dropdown_address_ajax.js",)
 
 
 admin.site.register(Division)
