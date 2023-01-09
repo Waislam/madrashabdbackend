@@ -66,7 +66,7 @@ class Address(models.Model):
     post_office = models.ForeignKey(PostOffice, on_delete=models.SET_NULL, blank=True, null=True,
                                     related_name='post_offices')
     post_code = models.ForeignKey(PostCode, on_delete=models.SET_NULL, blank=True, null=True, related_name='post_cods')
-    address_info = models.TextField()
+    address_info = models.TextField(blank=True,  null=True)
 
     # def __str__(self):
     # #commented when got error of name valu during viewing individual student profile in admin
