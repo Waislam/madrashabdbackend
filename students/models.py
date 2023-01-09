@@ -120,7 +120,8 @@ class Student(models.Model):
     board_exam_roll = models.CharField(max_length=50, blank=True, null=True)
     board_exam_result = models.CharField(max_length=50, blank=True, null=True)
 
-    admitted_department = models.ForeignKey(Department, on_delete=models.PROTECT, related_name='department_students')
+    admitted_department = models.ForeignKey(Department, on_delete=models.SET_NULL, related_name='department_students',
+                                            blank=True, null=True)
     admitted_class = models.ForeignKey(MadrashaClasses, on_delete=models.SET_NULL, related_name='class_students',
                                        blank=True, null=True)
     admitted_group = models.ForeignKey(MadrashaGroup, on_delete=models.SET_NULL, related_name='group_students',
@@ -148,7 +149,7 @@ class Student(models.Model):
     is_transport_fee = models.BooleanField(default=False)
     talimi_murobbi_name = models.CharField(max_length=150, blank=True, null=True)
     eslahi_murobbi_name = models.CharField(max_length=150, blank=True, null=True)
-    slug = models.SlugField( blank=True, null=True)
+    slug = models.SlugField(blank=True, null=True)
 
     class Meta:
         # unique_together = [['student_id', 'madrasha']]
@@ -166,7 +167,7 @@ class Student(models.Model):
             last_student_id = starting_from
 
         new_student_id = str(last_student_id + 1)
-        generated_id = 'S'+ madrasha_slug + new_student_id
+        generated_id = 'S' + madrasha_slug + new_student_id
         print("generated_id", generated_id)
         return generated_id
 
