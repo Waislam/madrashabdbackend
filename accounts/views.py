@@ -283,6 +283,7 @@ class CustomAuthToken(ObtainAuthToken, APIView):
                 'madrasha_address': {
                     'address_id': madrasha.madrasha_address.id,
                     'address_district': madrasha.madrasha_address.district.name,
+                    'address_thana': madrasha.madrasha_address.thana.name,
                     'address_post_office': madrasha.madrasha_address.post_office.name,
                     'address_info': madrasha.madrasha_address.address_info
                 }

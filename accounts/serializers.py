@@ -216,8 +216,8 @@ class AvatarUpdateSerializer(serializers.ModelSerializer):
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        # exclude = ["password", 'avatar']
-        exclude = ['avatar']
+        exclude = ["password", 'avatar']
+        # exclude = ['avatar']
 
 
 class CustomUserUpdateSerializer(serializers.ModelSerializer):
