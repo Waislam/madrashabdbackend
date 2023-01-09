@@ -61,7 +61,7 @@ class AcademicFess(models.Model):
 
 
 class Parent(models.Model):
-    parent_name = models.CharField(max_length=150)
+    parent_name = models.CharField(max_length=150, blank=True, null=True)
     parent_date_of_birth = models.DateField(blank=True, null=True)
     parent_nid = models.CharField(max_length=255, blank=True, null=True)
     occupation = models.CharField(max_length=50, default='null', choices=OCCUPATION_CHOICE)
@@ -113,7 +113,8 @@ class Student(models.Model):
     previous_ending_at = models.DateField(blank=True, null=True)
     previous_ending_class = models.CharField(max_length=50, blank=True, null=True)
     previous_ending_result = models.CharField(max_length=20, blank=True, null=True)
-
+    previous_exam_institute = models.CharField(max_length=300, blank=True, null=True)
+    previous_institution_session = models.CharField(max_length=300, blank=True, null=True)
     board_exam_name = models.CharField(max_length=30, default='null', choices=BOARD_EXAM_CHOICE, blank=True, null=True)
     board_exam_registration = models.CharField(max_length=50, blank=True, null=True)
     board_exam_roll = models.CharField(max_length=50, blank=True, null=True)
