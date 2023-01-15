@@ -21,7 +21,7 @@ from .views import (
     ExtraActivityView,
     ExtraActivityDetailView,
     ExamRoutineListView,
-    UpdateClassResult, ResultInfoListView, ExamRoutineCreateView, SubjectMarkView
+    UpdateClassResult, ResultInfoListView, ExamRoutineCreateView, SubjectMarkView, ExamTermDetailsView
 )
 
 urlpatterns = [
@@ -49,6 +49,7 @@ urlpatterns = [
     path('<madrasha_slug>/exam-registration/', ExamRegistrationListView.as_view()),
 
     path('<madrasha_slug>/exam-term/', ExamTermListView.as_view()),
+    path('exam-term/detail/<int:pk>/', ExamTermDetailsView.as_view()),
 
     path('<madrasha_slug>/hall-duty/', HallDutyListView.as_view()),
     path('hall-duty/detail/<int:pk>/', HallNigranDetailView.as_view()),
