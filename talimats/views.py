@@ -522,6 +522,11 @@ class ExamTermDetailsView(APIView):
         except ExamTerm.DoesNotExist:
             return Http404
 
+    def get(self, request, pk, formate=None):
+        obj = self.get_object(pk)
+        serializer = ExamTermSerializer(obj)
+        return Response({"status": True, "data": serializer.data})
+
     def put(self, request, pk, formate=None):
         obj = self.get_object(pk)
         serializer = ExamTermSerializer(obj, data=request.data)
