@@ -64,7 +64,6 @@ class BookDistributionToTeacherView(mixins.CreateModelMixin,
                                     mixins.ListModelMixin,
                                     generics.GenericAPIView
                                     ):
-
     queryset = BookDistributeToTeacher.objects.all()
 
     def get_queryset(self):
@@ -514,6 +513,28 @@ class ExamTermListView(
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+
+class ExamTermDetailsView(APIView):
+    def get_object(self, pk):
+        try:
+            return ExamTerm.objects.get(id=pk)
+        except ExamTerm.DoesNotExist:
+            return Http404
+
+    def put(self, request, pk, formate=None):
+        obj = self.get_object(pk)
+        serializer = ExamTermSerializer(obj, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "status": True,
+                    "message": "Exam Term has been updated successfully",
+                    "data": serializer.data,
+                }
+            )
+        return Response({"status": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class HallDutyListView(
