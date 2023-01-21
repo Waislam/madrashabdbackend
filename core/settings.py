@@ -19,10 +19,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 DEBUG = True
-SECRET_KEY='django-insecure-wg(wplo(x!$a(l$rzw5k!tr4v#k9zxy5=o_7*9@a(_q4f&3s&8'
-ALLOWED_HOSTS=[
+SECRET_KEY = 'django-insecure-wg(wplo(x!$a(l$rzw5k!tr4v#k9zxy5=o_7*9@a(_q4f&3s&8'
+ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    '64.227.152.193',  # for dev server
     '178.128.94.215',
     'ec2-15-206-185-206.ap-south-1.compute.amazonaws.com',
     'edu.ikhwanbd.com',
@@ -197,15 +198,15 @@ REST_FRAMEWORK = {
 
 
 CSRF_TRUSTED_ORIGINS = [
-        'http://178.128.94.215:1337',
-        "http://178.128.94.215",
-        "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337",
-        "https://edu.ikhwanbd.com",
-        "https://devadmin.ikhwanbd.com"
-    ]
+    'http://178.128.94.215:1337',
+    "http://64.227.152.193",  # for dev server
+    "http://178.128.94.215",
+    "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337",
+    "https://edu.ikhwanbd.com",
+    "https://devadmin.ikhwanbd.com"
+]
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
 
 ## SMS Settings
 
