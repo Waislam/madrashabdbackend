@@ -1,5 +1,4 @@
 *.py[cod]
-.*
 !.dockerignore
 !.github
 !.gitignore
@@ -10,6 +9,8 @@
 *.pyc
 local_settings.py
 __pycache__/
+/__pycache__/
+**/__pycache__/
 build/
 coverage/
 dist/
@@ -20,7 +21,6 @@ dist/
 /static/
 
 # Environments
-.env
 .venv
 env/
 venv/
@@ -33,6 +33,7 @@ venv.bak/
 #!**/migrations
 #!**/migrations/__init__.py
 
+sqlite3
 db.sqlite3
 db.sqlite3-journal
 *.so

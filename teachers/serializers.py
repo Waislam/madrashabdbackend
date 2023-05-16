@@ -67,8 +67,9 @@ class TeacherSerializer(serializers.ModelSerializer):
         skill_obj = Skill.objects.create(**skill)
         experience_obj = Experience.objects.create(**experience)
 
-        ##create user
-        user_created = CustomUser.objects.create(**user_object)
+        # create user
+        phone = user_object.pop('phone')
+        user_created = CustomUser.objects.create_user(phone=phone, **user_object)
 
         # now create teacher obj
         teacher = Teacher.objects.create(
@@ -81,57 +82,6 @@ class TeacherSerializer(serializers.ModelSerializer):
             **validated_data
         )
         return teacher
-
-    # def update(self, instance, validated_data):
-    #     # get all nested obj
-    #
-    #     present_address = instance.present_address
-    #     permanent_address = instance.permanent_address
-    #     education = instance.education
-    #     skill = instance.skill
-    #
-    #     # get updated fields value for every nested obj
-    #     def address_method(varname, validated_value):
-    #         varname.division = validated_data.get(validated_value).get('division', varname.division)
-    #         varname.district = validated_data.get(validated_value).get('district', varname.district)
-    #         varname.thana = validated_data.get(validated_value).get('thana', varname.thana)
-    #         varname.post_office = validated_data.get(validated_value).get('post_office', varname.post_office)
-    #         varname.post_code = validated_data.get(validated_value).get('post_code', varname.post_code)
-    #         varname.address_info = validated_data.get(validated_value).get('address_info', varname.address_info)
-    #         output = varname.save()
-    #         return output
-    #
-    #     address_method(present_address, 'present_address')
-    #     address_method(permanent_address, 'permanent_address')
-    #
-    #     education.degree_name = validated_data.get('education').get('degree_name', education.degree_name)
-    #     education.institution_name = validated_data.get('education').get('institution_name', education.institution_name)
-    #     education.passing_year = validated_data.get('education').get('passing_year', education.passing_year)
-    #     education.result = validated_data.get('education').get('result', education.result)
-    #     education.save()
-    #
-    #     skill.skill_name = validated_data.get('skill').get('skill_name', skill.skill_name)
-    #     skill.save()
-    #
-    #     # get instance fields
-    #     instance.father_name = validated_data.get('father_name', instance.father_name)
-    #     instance.mother_name = validated_data.get('mother_name', instance.mother_name)
-    #     instance.date_of_birth = validated_data.get('date_of_birth', instance.date_of_birth)
-    #     instance.religion = validated_data.get('religion', instance.religion)
-    #     instance.marital_status = validated_data.get('marital_status', instance.marital_status)
-    #     instance.phone_home = validated_data.get('phone_home', instance.phone_home)
-    #     instance.nid = validated_data.get('nid', instance.nid)
-    #     instance.birth_certificate = validated_data.get('birth_certificate', instance.birth_certificate)
-    #     instance.nationality = validated_data.get('nationality', instance.nationality)
-    #     instance.blood_group = validated_data.get('blood_group', instance.blood_group)
-    #     instance.department = validated_data.get('department', instance.department)
-    #     instance.designation = validated_data.get('designation', instance.designation)
-    #     instance.starting_date = validated_data.get('starting_date', instance.starting_date)
-    #     instance.ending_date = validated_data.get('ending_date', instance.ending_date)
-    #     instance.slug = validated_data.get('slug', instance.slug)
-    #
-    #     instance.save()
-    #     return instance
 
 
 class TeacherUpdateSerializer(serializers.ModelSerializer):
@@ -193,7 +143,6 @@ class TeacherUpdateSerializer(serializers.ModelSerializer):
         experience.experience_name = validated_data.get('experience').get('experience_name', experience.experience_name)
         experience.save()
 
-
         ## add nested updated field
         # instance.skill = validated_data.get('skill', skill)
         # get instance fields
@@ -218,7 +167,7 @@ class TeacherUpdateSerializer(serializers.ModelSerializer):
 
 
 class TeacherListSerializer(serializers.ModelSerializer):
-    user = CustomUserListSerializer()
+    # user = CustomUserListSerializer()
     madrasha = MadrashaSerializer()
     present_address = AddressDetailSerializer()
     permanent_address = AddressDetailSerializer()
@@ -236,3 +185,4 @@ class TeacherListSerializer(serializers.ModelSerializer):
             'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', 'department',
             'designation', 'starting_date', 'ending_date', 'slug', 'experience'
         ]
+        depth = 2

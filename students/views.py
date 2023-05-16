@@ -10,6 +10,8 @@ from .pagination import CustomPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from .filters import StudentFilter
+
+
 # from dateutil import relativedelta
 
 
@@ -53,22 +55,22 @@ class StudentView(
 class StudentDetailView(APIView):
     """this class is for CRUD"""
 
-    def get_object(self, slug):
+    def get_object(self, madrasha_slug, slug):
         """For getting single obj with slug field"""
         try:
-            return Student.objects.get(slug=slug)
+            return Student.objects.get(madrasha__slug=madrasha_slug, slug=slug)
         except Student.DoesNotExist:
             raise Http404
 
-    def get(self, request, slug, formate=None):
+    def get(self, request, madrasha_slug, slug, formate=None):
         """For getting single student details"""
-        student = self.get_object(slug)
+        student = self.get_object(madrasha_slug, slug)
         serializer = StudentListSerializer(student)
         return Response({"status": True, "data": serializer.data})
 
-    def put(self, request, slug, formate=None):
+    def put(self, request, madrasha_slug, slug, formate=None):
         """update single obj details"""
-        student = self.get_object(slug)
+        student = self.get_object(madrasha_slug, slug)
         serializer = StudentSerializerUpdate(student, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -104,8 +106,8 @@ class StudentDetailView(APIView):
 
 
 class OldStudentUpdateView(APIView):
-    def patch(self, request, slug, formate=None, **kwargs):
-        student = Student.objects.get(slug=slug)
+    def patch(self, request, madrasha_slug, slug, formate=None, **kwargs):
+        student = Student.objects.get(madrasha__slug=madrasha_slug, slug=slug)
         serializer = OldStudentUpdateSerializer(student, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -120,17 +122,17 @@ class OldStudentUpdateView(APIView):
 class StudentDetailBySlugView(APIView):
     """this class is for CRUD"""
 
-    def get_object(self, student_id):
+    def get_object(self, student_id, madrasha_slug):
         """For getting single obj with slug field"""
         try:
-            return Student.objects.get(student_id=student_id)
+            return Student.objects.get(student_id=student_id, madrasha__slug=madrasha_slug)
         except Student.DoesNotExist:
             raise Http404
 
-    def get(self, request, student_id, formate=None):
+    def get(self, request, student_id, madrasha_slug, formate=None):
         """For getting single student details"""
         try:
-            student = self.get_object(student_id)
+            student = self.get_object(student_id, madrasha_slug)
             serializer = StudentListSerializer(student)
             return Response({"status": True, "data": serializer.data})
         except:

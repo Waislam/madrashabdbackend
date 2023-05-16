@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.prod
+    container_name: web
     command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/app/web/static
@@ -26,12 +27,19 @@ services:
     networks:
       - madrashaNet
   nginx:
-    build: ./nginx
+    build: ./nginx/prod
+    container_name: nginx
+    env_file:
+      - ./nginx/prod/.env.prod
     volumes:
       - static_volume:/home/app/web/static
       - media_volume:/home/app/web/media
+      - certbot_www_volume:/vol/www/
+      - proxy_dhparams:/vol/proxy
+      - certbot_certs_volume:/etc/letsencrypt/
     ports:
-      - 1337:80
+      - '80:80'
+      - '443:443'
     depends_on:
       - web
       - db
@@ -53,10 +61,28 @@ services:
       - madrashaNet
     restart: unless-stopped
 
+  certbot:
+    build:
+      context: ./certbot/
+    command: echo "Skipping..."
+    container_name: certbot
+    env_file:
+      - ./nginx/prod/.env.prod
+    volumes:
+      - certbot_www_volume:/vol/www/
+      - certbot_certs_volume:/etc/letsencrypt/
+    depends_on:
+      - nginx
+    networks:
+      - madrashaNet
 volumes:
   postgres_data:
   static_volume:
   media_volume:
+  pgadmin:
+  certbot_www_volume:
+  certbot_certs_volume:
+  proxy_dhparams:
 
 networks:
   madrashaNet:

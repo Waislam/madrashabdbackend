@@ -37,7 +37,9 @@ from .serializers import (DepartmentListSerializer,
                           RoomsSerializer
                           )
 
-
+from django.conf import settings
+import requests
+import json
 # Create your views here.
 
 # ========================== 1. Department ===================================
@@ -733,3 +735,31 @@ class SeatDetailView(APIView):
         seat = self.get_object(pk)
         seat.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+##=============== SMS SEND =======================
+
+def SendSMS(numbers, msg):
+    apiEndpoint = settings.SMS_API_ENDPOINT
+    apiKey = settings.SMS_API_KEY
+    apiSender = settings.SMS_SENDER
+
+    headers = {'content-type': 'application/json'}
+    url = apiEndpoint
+    params = {'apikey': apiKey, 'sender': apiSender,'msisdn': numbers,'smstext':msg}
+
+    if settings.SMS_ACTIVE:
+        response = requests.post(url, params=params, headers=headers)
+    else:
+        response= {'status':False,'message': "SMS Settings is not activate", }
+    return response
+
+class SmsSendView(APIView):
+     def post(self, request, formate=None, **kwargs):
+        requested_data=request.data
+        if (requested_data["numbers"]):
+            numbers = requested_data["numbers"]
+            msg = requested_data["msg"]
+            send_sms = SendSMS(numbers,msg)
+            return Response({'message': "Success",'status': True,'data':send_sms})
+        else:
+            return Response({'message': "Error", 'status':False})

@@ -1,14 +1,3 @@
 [
-{
-    "model": "settingapp.madrashagroup",
-    "pk": 1,
-    "fields": {
-        "name": "New Group",
-        "department": 1,
-        "madrasha_class": 1,
-        "is_active": true,
-        "madrasha": 1,
-        "slug": "new-group"
-    }
-}
+
 ]

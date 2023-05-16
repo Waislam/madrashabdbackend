@@ -19,6 +19,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 DEBUG = True
+SECRET_KEY = 'django-insecure-wg(wplo(x!$a(l$rzw5k!tr4v#k9zxy5=o_7*9@a(_q4f&3s&8'
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '64.227.152.193',  # for dev server
+    '178.128.94.215',
+    'ec2-15-206-185-206.ap-south-1.compute.amazonaws.com',
+    'edu.ikhwanbd.com',
+    'devadmin.ikhwanbd.com'
+]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'madrasha_db',
+        'USER': 'madrasha',
+        'PASSWORD': 'madrasha',
+        'HOST': 'db',
+        'PORT': '5432',
+    }
+}
 
 # Application definition
 
@@ -84,7 +105,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
 # ======================Custom User=====================
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
@@ -106,6 +126,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# password hasher
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+]
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -123,10 +150,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
-if DEBUG:
-    STATICFILES_DIRS = (os.path.join(BASE_DIR / 'static'),)
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR / 'static')
+# if DEBUG:
+#     STATICFILES_DIRS = (os.path.join(BASE_DIR / 'static'),)
+# else:
+#     STATIC_ROOT = os.path.join(BASE_DIR / 'static')
+
+STATIC_ROOT = os.path.join(BASE_DIR / 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -141,7 +170,6 @@ try:
 except ImportError:
     pass
 
-
 REST_FRAMEWORK = {
     # for custom pagination in mixin
     # 'DEFAULT_PAGINATION_CLASS': 'students.pagination.CustomPagination',
@@ -151,8 +179,39 @@ REST_FRAMEWORK = {
 
 }
 
-if DEBUG:
-    CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8087', 'http://178.128.94.215:1337', 'http://178.128.94.215']
-else:
-    CSRF_TRUSTED_ORIGINS = ['http://178.128.94.215:1337', "http://178.128.94.215"]
+# if DEBUG:
+#     CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8087',
+#                             'http://178.128.94.215:1337',
+#                             'http://178.128.94.215',
+#                             "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337",
+#                             "https://dev.ikhwanbd.com",
+#                             "http://devadmin.ikhwanbd.com"
+#                             ]
+# else:
+#     CSRF_TRUSTED_ORIGINS = [
+#         'http://178.128.94.215:1337',
+#         "http://178.128.94.215",
+#         "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337",
+#         "https://dev.ikhwanbd.com",
+#         "http://devadmin.ikhwanbd.com"
+#     ]
 
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://178.128.94.215:1337',
+    "http://64.227.152.193",  # for dev server
+    "http://178.128.94.215",
+    "http://ec2-15-206-185-206.ap-south-1.compute.amazonaws.com:1337",
+    "https://edu.ikhwanbd.com",
+    "https://devadmin.ikhwanbd.com"
+]
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+## SMS Settings
+
+SMS_API_ENDPOINT = "https://api.syssms.syssolution.com.bd/smsapiv3"
+SMS_API_KEY = "17002bc09f55fa102ed6586c82ea7b3e"
+SMS_SENDER = "8801552146318"
+# SMS_ACTIVE = True
+SMS_ACTIVE = False

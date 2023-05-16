@@ -44,11 +44,12 @@ class OtherIncomeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OtherIncome
-        fields = ['id', 'madrasha', 'category', 'sub_category', 'donar_name', 'amount', 'for_month', 'for_months',
-                  'paid_date', 'receipt_book_number', 'receipt_page_number', 'receipt_number', 'voucher_name']
+        fields = ['id', 'madrasha', 'category', 'sub_category', 'donar_name','member','member_type', 'amount',
+                  'paid_date','address', 'receipt_book_number', 'receipt_page_number', 'receipt_number', 'voucher_name']
 
     def create(self, validated_data):
         # create Other Income obj
+        print("validated_data", validated_data)
         other_income = OtherIncome.objects.create(**validated_data)
         return other_income
 
@@ -67,8 +68,11 @@ class OtherIncomeSerializer(serializers.ModelSerializer):
         # get instance fields
         instance.donar_name = validated_data.get('donar_name', instance.donar_name)
         instance.amount = validated_data.get('amount', instance.amount)
-        instance.for_month = validated_data.get('for_month', instance.for_month)
-        instance.for_months = validated_data.get('for_months', instance.for_months)
+        instance.member = validated_data.get('member', instance.member)
+        instance.member_type = validated_data.get('member_type', instance.member_type)
+        instance.address = validated_data.get('member_type', instance.address)
+#         instance.for_month = validated_data.get('for_month', instance.for_month)
+#         instance.for_months = validated_data.get('for_months', instance.for_months)
         instance.receipt_book_number = validated_data.get('receipt_book_number', instance.receipt_book_number)
         instance.receipt_page_number = validated_data.get('receipt_page_number', instance.receipt_page_number)
         instance.category = validated_data.get('category', category)
@@ -85,11 +89,17 @@ class OtherIncomeListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OtherIncome
-        fields = ['id', 'madrasha', 'category', 'sub_category', 'donar_name', 'amount', 'for_month', 'for_months',
-                  'paid_date', 'receipt_book_number', 'receipt_page_number', 'receipt_number', 'voucher_name']
+        fields = ['id', 'madrasha', 'category', 'sub_category', 'donar_name', 'amount','member','member_type',
+                  'paid_date','address', 'receipt_book_number', 'receipt_page_number', 'receipt_number', 'voucher_name']
 
         depth = 3
 
+class OtherIncomeListSerializerV2 (serializers.ModelSerializer):
+
+    class Meta:
+        model = OtherIncome
+        fields = '__all__'
+        depth = 2
 
 class ExpenseCategorySerializer(serializers.ModelSerializer):
 
@@ -109,7 +119,7 @@ class AllExpenseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AllExpense
-        fields = ['id', 'madrasha', 'category', 'sub_category', 'expense_by', 'date', 'for_month', 'for_months',
+        fields = ['id', 'madrasha', 'category', 'sub_category', 'expense_by', 'date',
                   'receipt_number', 'description', 'approved_by', 'amount', 'voucher_name']
 
     def create(self, validated_data):
@@ -131,8 +141,8 @@ class AllExpenseSerializer(serializers.ModelSerializer):
 
         # get instance fields
         instance.expense_by = validated_data.get('expense_by', instance.expense_by)
-        instance.for_month = validated_data.get('for_month', instance.for_month)
-        instance.for_months = validated_data.get('for_months', instance.for_months)
+#         instance.for_month = validated_data.get('for_month', instance.for_month)
+#         instance.for_months = validated_data.get('for_months', instance.for_months)
         instance.receipt_number = validated_data.get('receipt_number', instance.receipt_number)
         instance.description = validated_data.get('description', instance.description)
         instance.approved_by = validated_data.get('approved_by', instance.approved_by)
@@ -151,5 +161,5 @@ class AllExpenseListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AllExpense
-        fields = ['id', 'madrasha', 'category', 'sub_category', 'expense_by', 'date', 'for_month', 'for_months',
+        fields = ['id', 'madrasha', 'category', 'sub_category', 'expense_by', 'date',
                   'receipt_number', 'description', 'approved_by', 'amount', 'voucher_name']

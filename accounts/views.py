@@ -6,9 +6,11 @@
 5. TokenAuthentication
 6. MadrashaUserListing
 7. AvatarUpdateView
+8. PasswordResetView
 '''
 import json
 
+from django.contrib.auth.hashers import check_password
 from django.shortcuts import render
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -30,7 +32,7 @@ from .serializers import (
     PostOfficeSerializer,
     PostCodeSerializer,
     CustomUserLoginSerializer,
-    MadrashaLoginSerializer
+    MadrashaLoginSerializer, PasswordResetSerializer
 )
 
 from rest_framework import status, generics
@@ -65,11 +67,33 @@ class DistrictListView(generics.ListAPIView):
         return queryset
 
 
-class ThanaListView(ListAPIView):
-    queryset = Thana.objects.all()
-    serializer_class = ThanaSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_class = ThanaFilter
+class DistrictList(APIView):
+    """for backend"""
+
+    def post(self, request):
+        division = request.data['division']
+        district = {}
+        if division:
+            districts = Division.objects.get(id=division).districts.all()
+            district = {d.name: d.id for d in districts}
+        return JsonResponse(data=district, safe=False)
+
+
+# class ThanaListView(ListAPIView):
+#     queryset = Thana.objects.all()
+#     serializer_class = ThanaSerializer
+#     filter_backends = [DjangoFilterBackend, SearchFilter]
+#     filterset_class = ThanaFilter
+
+
+class ThanaList(APIView):
+    def post(self, request):
+        district = request.data['district']
+        thana = {}
+        if district:
+            thanas = District.objects.get(id=district).thanas.all()
+            thana = {d.name: d.id for d in thanas}
+        return JsonResponse(data=thana, safe=False)
 
 
 class ThanaListViewWithDependency(generics.ListAPIView):
@@ -84,6 +108,7 @@ class ThanaListViewWithDependency(generics.ListAPIView):
 
 
 class PostOfficeListViewWithDependency(generics.ListAPIView):
+    """this is for front end"""
     serializer_class = PostOfficeSerializer
 
     def get_queryset(self):
@@ -93,38 +118,42 @@ class PostOfficeListViewWithDependency(generics.ListAPIView):
             queryset = queryset.filter(district__pk=district)
         return queryset
 
-# class PostOfficeList(APIView):
-#     def post(self, request):
-#         district = request.data['district']
-#         post_office = {}
-#         if district:
-#             post_offices = District.objects.get(id=district).postoffices.all()
-#             post_office = {d.name: d.id for d in post_offices}
-#         return JsonResponse(data=post_office, safe=False)
+
+class PostOfficeList(APIView):
+    """this is for backend"""
+
+    def post(self, request):
+        district = request.data['district']
+        post_office = {}
+        if district:
+            post_offices = District.objects.get(id=district).postoffices.all()
+            post_office = {d.name: d.id for d in post_offices}
+        return JsonResponse(data=post_office, safe=False)
 
 
-class PostOfficeListView(ListAPIView):
-    queryset = PostOffice.objects.all()
-    serializer_class = PostOfficeSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_class = PostOfficeFilter
+# class PostOfficeListView(ListAPIView):
+#     queryset = PostOffice.objects.all()
+#     serializer_class = PostOfficeSerializer
+#     filter_backends = [DjangoFilterBackend, SearchFilter]
+#     filterset_class = PostOfficeFilter
 
 
-# class PostCodeList(APIView):
-#     def post(self, request):
-#         post_office = request.data['post_office']  # here post_code is the var from form
-#         post_code = {}
-#         if post_office:
-#             post_codes = PostCode.objects.get(id=post_office).postcodess.all()
-#             post_code = {d.name: d.id for d in post_codes}
-#         return JsonResponse(data=post_code, safe=False)
+class PostCodeList(APIView):
+    """this is for backend"""
+    def post(self, request):
+        post_office = request.data['post_office']  # here post_code is the var from form
+        post_code = {}
+        if post_office:
+            post_codes = PostOffice.objects.get(id=post_office).postcodess.all()
+            post_code = {d.name: d.id for d in post_codes}
+        return JsonResponse(data=post_code, safe=False)
 
 
-class PostCodeListView(ListAPIView):
-    queryset = PostCode.objects.all()
-    serializer_class = PostCodeSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_class = PostCodeFilter
+# class PostCodeListView(ListAPIView):
+#     queryset = PostCode.objects.all()
+#     serializer_class = PostCodeSerializer
+#     filter_backends = [DjangoFilterBackend, SearchFilter]
+#     filterset_class = PostCodeFilter
 
 
 class PostCodeListViewWithDependency(generics.ListAPIView):
@@ -136,6 +165,7 @@ class PostCodeListViewWithDependency(generics.ListAPIView):
         if post_office is not None:
             queryset = queryset.filter(post_office__pk=post_office)
         return queryset
+
 
 # ==================== 2. individual address ============
 
@@ -239,6 +269,7 @@ class CustomAuthToken(ObtainAuthToken, APIView):
         madrasha = Madrasha.objects.get(slug=user_madrasha.madrasha.slug)
         user_info = CustomUserLoginSerializer(model_to_dict(user_data))
         # print("madrasha_info: ", madrasha.pk, madrasha.name, madrasha.madrasha_address.address_info)
+        # print("madrasha: ", madrasha.madrasha_logo)
 
         return Response({
             'status': True,
@@ -253,12 +284,15 @@ class CustomAuthToken(ObtainAuthToken, APIView):
                 'madrasha_address': {
                     'address_id': madrasha.madrasha_address.id,
                     'address_district': madrasha.madrasha_address.district.name,
+                    'address_thana': madrasha.madrasha_address.thana.name,
                     'address_post_office': madrasha.madrasha_address.post_office.name,
-                    'address_info': madrasha.madrasha_address.address_info
-                }
+                    'address_info': madrasha.madrasha_address.address_info,
+                },
+                'madrasha_logo': madrasha.madrasha_logo
             },
             'user_madrasha_slug': madrasha.slug,
             'user_madrasha_code': madrasha.madrasha_code,
+            'madrasha_logo': madrasha.madrasha_logo
         })
 
         # if user_info.is_valid():
@@ -326,3 +360,20 @@ class UserDetail(
 
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
+
+
+# ===================== 8. PasswordResetView =================
+class PasswordResetView(APIView):
+    def post(self, request, user_id, formate=None):
+        serializer = PasswordResetSerializer(data=request.data)
+        if serializer.is_valid():
+            password = serializer.validated_data['password1']
+            old_password = serializer.validated_data['old_password']
+            user = CustomUser.objects.get(id=user_id)
+            if check_password(old_password, user.password):
+                user.set_password(password)
+                user.save()
+                return Response({"message": "password reset successfully"}, status=status.HTTP_200_OK)
+            return Response({"message": "Your old password doesn't match"}, status=status.HTTP_400_BAD_REQUEST)
+        # return Response({"message": serializer.errors, "status": status.HTTP_400_BAD_REQUEST})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

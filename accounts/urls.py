@@ -2,9 +2,9 @@ from django.urls import path
 from .views import (
     DivisionListView,
     DistrictListView,
-    ThanaListView,
-    PostOfficeListView,
-    PostCodeListView,
+    # ThanaListView,
+    # PostOfficeListView,
+    # PostCodeListView,
     AddressDetail,
     MadrashaView,
     MadrashaDetailView,
@@ -13,7 +13,8 @@ from .views import (
     MadrashaUserListingView,
     AvatarUpdateView,
     UserDetail,
-    ThanaListViewWithDependency, PostOfficeListViewWithDependency, PostCodeListViewWithDependency
+    ThanaListViewWithDependency, PostOfficeListViewWithDependency, PostCodeListViewWithDependency, PasswordResetView,
+    DistrictList, PostOfficeList, ThanaList, PostCodeList
 )
 
 urlpatterns = [
@@ -22,15 +23,19 @@ urlpatterns = [
 
     # Address path
     path('division/', DivisionListView.as_view()),
-    path('district/', DistrictListView.as_view()),
+    path('district/', DistrictList.as_view()),  # for backend dependable newly added on 7
+    # path('district/', DistrictListView.as_view()),
     path('district/<division>/', DistrictListView.as_view()),
 
-    path('thana/', ThanaListView.as_view()),
+    path('thana/', ThanaList.as_view()),  # for backend dependable newly added on 7
+    # path('thana/', ThanaListView.as_view()),
     path('thana/<district>/', ThanaListViewWithDependency.as_view()),
 
-    path('post-office/', PostOfficeListView.as_view()),
+    path('post-office/', PostOfficeList.as_view()),  # for backend dependable newly added on 7
+    # path('post-office/', PostOfficeListView.as_view()),
     path('post-office/<district>/', PostOfficeListViewWithDependency.as_view()),
-    path('post-code/', PostCodeListView.as_view()),
+    path('post-code/', PostCodeList.as_view()),  # for backend dependable newly added on 7
+    # path('post-code/', PostCodeListView.as_view()),
     path('post-code/<post_office>/', PostCodeListViewWithDependency.as_view()),
     path('address/<int:pk>/', AddressDetail.as_view()),
 
@@ -40,4 +45,7 @@ urlpatterns = [
     path('madrasha-admin/', UserRegistrationView.as_view()),
     path('mu-listing/', MadrashaUserListingView.as_view()),
     path('avatar/<int:pk>/', AvatarUpdateView.as_view()),
+
+    # password reset
+    path('madrasha-admin-pass-reset/<user_id>/', PasswordResetView.as_view())
 ]

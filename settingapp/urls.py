@@ -19,7 +19,7 @@ from .views import (
     ExamRulesView,
     ExamRulesDetailview,
     BuildingView, RoomView, BuildingDetailView, RoomDetailView, SeatView, SeatDetailView, RoomListOnBuilding,
-    FeesCategoryView, FeeCategoryDetailView, FeesViewByClass
+    FeesCategoryView, FeeCategoryDetailView, FeesViewByClass,SmsSendView
 )
 
 urlpatterns = [
@@ -64,4 +64,7 @@ urlpatterns = [
     path('<madrasha_slug>/seat/', SeatView.as_view()),
     path('<madrasha_slug>/seat/<room_id>/', SeatView.as_view()),
     path('seat/detail/<int:pk>/', SeatDetailView.as_view()),
+
+    path('sms/send/', SmsSendView.as_view()),
+
 ]
